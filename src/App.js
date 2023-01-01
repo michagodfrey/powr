@@ -33,11 +33,21 @@ function App() {
     });
   }, [])
   
+  
 
   const register = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-      await addDoc(usersRef, { email: registerEmail })
+      await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      .then(async (res) => {
+        const ref = doc(db, "users", res.user.uid);
+        await setDoc(ref, {
+          email: registerEmail
+        })
+      })
+      .catch((error) => {
+        console.log(error.message)
+      })
+
     } catch (error) {
       console.log(error.message);
     }
@@ -62,12 +72,12 @@ function App() {
 
   return (
     <>
-      <header>
+      {/* <header>
         <div>
           <p>POWR</p>
           <p>Progressive Overload Workout Recorder</p>
         </div>
-        {/* <button onClick={openModal}>Open Modal</button> */}
+
         <div>
           {user ? (
             <>
@@ -111,20 +121,18 @@ function App() {
             </>
           )}
         </div>
-      </header>
+      </header> */}
       {/* <aside>
         <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
       </aside> */}
-      <section>spacer</section>
+      {/* <section>spacer</section> */}
       <main>
-        <h2>Add exercise</h2>
-        <table>
+        {/* <button onClick={newWorkout}>New workout</button> */}
 
-        </table>
-        <Workout />
+        {/* <Workout /> */}
         <CreateWorkout />
       </main>
-      <footer>This is a footer</footer>
+      {/* <footer>This is a footer</footer> */}
     </>
   );
 }

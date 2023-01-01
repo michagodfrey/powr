@@ -9,10 +9,13 @@ const Workout = () => {
     const [ newExercise, setNewExercise ] = useState("");
     const [ newReps, setNewReps ] = useState(0);
     const [ newWeight, setNewWeight ] = useState(0);
-    const exercisesCollectionRefEx = collection(db, "exercises");
+    const exercisesCollectionRefEx = collection(
+      db,
+      "exercises"
+    );
 
     const [ workouts, setWorkouts ] = useState([]);
-    const exercisesCollectionRefWk = collection(db, "workout");
+    
 
     const addExercise = async () => {
         await addDoc(exercisesCollectionRefEx, { exercise: newExercise, reps: Number(newReps), weight: Number(newWeight) });
@@ -52,7 +55,7 @@ const Workout = () => {
           data.map(async (elem) => {
             const workoutQuery = query(collection(db, `workout/${elem.id}/exercises`))
             const workoutDetails = await getDocs(workoutQuery);
-            const workoutInfo =workoutDetails.docs.map((doc) => ({
+            const workoutInfo = workoutDetails.docs.map((doc) => ({
               ...doc.data(), id: doc.id
             }))
             console.log(workoutInfo)
@@ -68,7 +71,7 @@ const Workout = () => {
 
   return (
     <>
-      <h1>Workout</h1>
+      <h1>Workout Component</h1>
       <input
         placeholder="exercise"
         onChange={(event) => {
@@ -90,6 +93,7 @@ const Workout = () => {
         }}
       />
       <button onClick={addExercise}>Add exercise</button>
+      <h2>Exercises collection data</h2>
       <table>
         <thead>
           <tr>
