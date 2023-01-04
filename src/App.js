@@ -1,30 +1,16 @@
 import { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "./firebase-config";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
-// import Modal from "./Modal";
+import { doc, setDoc } from "firebase/firestore";
 import Workout from "./Workout";
 import CreateWorkout from "./CreateWorkout";
 
 function App() {
-
-  // sign in and register user states
   const [ registerEmail, setRegisterEmail ] = useState("");
   const [ registerPassword, setRegisterPassword ] = useState("");
   const [ loginEmail, setLoginEmail ] = useState("");
   const [ loginPassword, setLoginPassword ] = useState("");
   const [ user, setUser ] = useState({});
-  // const [ isModalOpen, setIstModalOpen ] = useState(false);
-
-  // const openModal = () => {
-  //   setIstModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIstModalOpen(false);
-  // };
-
-  const usersRef = collection(db, "users");
 
   // display current user email
   useEffect(() => {
@@ -68,11 +54,9 @@ function App() {
     console.log("signed out")
   }
 
-  // console.log(user)
-
   return (
     <>
-      {/* <header>
+      <header>
         <div>
           <p>POWR</p>
           <p>Progressive Overload Workout Recorder</p>
@@ -121,18 +105,12 @@ function App() {
             </>
           )}
         </div>
-      </header> */}
-      {/* <aside>
-        <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
-      </aside> */}
-      {/* <section>spacer</section> */}
+      </header>
       <main>
-        {/* <button onClick={newWorkout}>New workout</button> */}
-
-        {/* <Workout /> */}
         <CreateWorkout />
+        <Workout />
       </main>
-      {/* <footer>This is a footer</footer> */}
+      <footer>This is a footer</footer>
     </>
   );
 }

@@ -5,20 +5,9 @@ import Exercise from './Exercise';
 
 const CreateWorkout = () => {
   const [ exerciseComponent, setExerciseComponent ] = useState([]);
-  const [ exerciseList, setExerciseList ] = useState([
-    // {
-    //   exercise: "deadlift",
-    //   weight: 100,
-    //   reps: 30
-    // }, {
-    //   exercise: "squats",
-    //   weight: 100,
-    //   reps:24
-    // }
-  ]);
   const [ workout, setWorkout ] = useState({});
   
-
+  // form input fields
   const handleChange = (e) => {
     setWorkout({
       ...workout,
@@ -27,52 +16,57 @@ const CreateWorkout = () => {
     console.log(workout)
   };
 
-
-  console.log(exerciseList)
- 
-    // const handleAddExercise = (exercise, weight, reps) => {
-    //   const exercise = {
-    //     exercise: 
-    //   }
-    // };
-
     // add new exercise input field
     const addExerciseComponent = () => {
       setExerciseComponent(
         exerciseComponent.concat(
           <Exercise
             key={exerciseComponent.length}
-            exerciseList={exerciseList}
-            setExerciseList={setExerciseList}
           />
         )
       );
     };
 
   const handleSubmit = async () => {
-    
+
+    // push execise data to array
+    const exercise = document.querySelectorAll(".exercise");
+    const weight = document.querySelectorAll(".weight");
+    const reps = document.querySelectorAll(".reps");
+
+    let tempList = [];
+
+    for (let i = 0; i < exercise.length; i++) {
+      console.log(exercise[i].value)
+      tempList.push({
+        exercise: exercise[i].value,
+        weight: weight[i].value,
+        reps: reps[i].value,
+      });
+    }
+
+    // get user
     const q = query(collection(db, "users"));
     const querySnapshot = await getDocs(q);
     const queryData = querySnapshot.docs.map((detail) => ({
       ...detail.data(),
       id: detail.id,
     }));
-    console.log(queryData);
+    // console.log(queryData);
+
+    // create new document on Firestore database
     queryData.map(async () => {
       await setDoc(
-        doc(db, "users/hwUQMGclPZQCJUO1jgYPDnzQwZp2/workouts", "workoutTest"),
+        // change to user id and sequentially generated doc title, workout-1
+        doc(db, "users/hwUQMGclPZQCJUO1jgYPDnzQwZp2/workouts", "workoutTest-0"),
         {
           date: workout.date,
           notes: workout.notes,
-          exercises: [...exerciseList]
+          exercises: [...tempList]
         }
       );
     });
   };
-
-  const showExList = () => {
-    console.log(exerciseList)
-  }
 
   return (
     <div>
@@ -90,35 +84,12 @@ const CreateWorkout = () => {
           placeholder="Workout notes"
           onChange={handleChange}
         ></textarea>
-        {/* <h3>Exercises</h3> */}
-        {/* <div className="exerciseComponent">
-          <input
-            name="exercise"
-            type="text"
-            placeholder="Exercise"
-            onChange={exerciseChange}
-          />
-          <input
-            name="reps"
-            type="number"
-            placeholder="weight"
-            onChange={exerciseChange}
-          />
-          <input
-            name="weight"
-            type="number"
-            placeholder="reps"
-            onChange={exerciseChange}
-          />
-        </div> */}
-        
-        {/* <input type="submit" value="Add workout" /> */}
+        <h3>Exercises</h3>
       </form>
       {exerciseComponent}
       <div>
         <button onClick={addExerciseComponent}>Add exercise</button>
         <button onClick={handleSubmit}>Add workout</button>
-        <button onClick={showExList}>Check exercise list</button>
       </div>
     </div>
   );
