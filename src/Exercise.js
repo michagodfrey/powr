@@ -12,17 +12,12 @@ const Exercise = () => {
           placeholder="Exercise"
         />
         <input
-          className="reps"
-          name="reps"
-          type="number"
-          placeholder="weight"
-        />
-        <input
           className="weight"
           name="weight"
           type="number"
-          placeholder="reps"
+          placeholder="weight"
         />
+        <input className="reps" name="reps" type="number" placeholder="reps" />
         {/* Make delete exercise button */}
         {/* <button type="submit">confirm exercise</button> */}
       </form>

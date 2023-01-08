@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
-import { doc, setDoc, getDocs, query, collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "./firebase-config";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Exercise from './Exercise';
 
 const CreateWorkout = () => {
   const [ exerciseComponent, setExerciseComponent ] = useState([]);
-  const [ workout, setWorkout ] = useState({});
+  const [ workoutNotes, setWorkoutNotes ] = useState("");
+  const [ startDate, setStartDate ] = useState(new Date());
   
-  // form input fields
-  const handleChange = (e) => {
-    setWorkout({
-      ...workout,
-      [e.target.name]: e.target.value,
-    });
-    console.log(workout)
-  };
-
     // add new exercise input field
     const addExerciseComponent = () => {
       setExerciseComponent(
@@ -28,8 +22,7 @@ const CreateWorkout = () => {
     };
 
   const handleSubmit = async () => {
-
-    // push execise data to array
+    // push execise data to array for quick access or find some other way to auto fil on subsequent workouts
     const exercise = document.querySelectorAll(".exercise");
     const weight = document.querySelectorAll(".weight");
     const reps = document.querySelectorAll(".reps");
@@ -37,7 +30,6 @@ const CreateWorkout = () => {
     let tempList = [];
 
     for (let i = 0; i < exercise.length; i++) {
-      console.log(exercise[i].value)
       tempList.push({
         exercise: exercise[i].value,
         weight: weight[i].value,
@@ -45,27 +37,14 @@ const CreateWorkout = () => {
       });
     }
 
-    // get user
-    const q = query(collection(db, "users"));
-    const querySnapshot = await getDocs(q);
-    const queryData = querySnapshot.docs.map((detail) => ({
-      ...detail.data(),
-      id: detail.id,
-    }));
-    // console.log(queryData);
-
-    // create new document on Firestore database
-    queryData.map(async () => {
-      await setDoc(
-        // change to user id and sequentially generated doc title, workout-1
-        doc(db, "users/hwUQMGclPZQCJUO1jgYPDnzQwZp2/workouts", "workoutTest-0"),
-        {
-          date: workout.date,
-          notes: workout.notes,
-          exercises: [...tempList]
-        }
-      );
-    });
+    await addDoc(
+      collection(db, "users/hwUQMGclPZQCJUO1jgYPDnzQwZp2/workouts"),
+      {
+        date: startDate,
+        notes: workoutNotes,
+        exercises: [...tempList],
+      }
+    );
   };
 
   return (
@@ -73,16 +52,17 @@ const CreateWorkout = () => {
       <h1>Create Workout component</h1>
       <h2>Add new workout</h2>
       <form>
-        <input
-          name="date"
-          type="string"
-          placeholder="date"
-          onChange={handleChange}
+        <DatePicker
+          selected={startDate}
+          dateFormat="dd/MM/yyyy"
+          maxDate={new Date()}
+          closeOnScroll={true}
+          onChange={(date) => setStartDate(date)}
         />
         <textarea
           name="notes"
           placeholder="Workout notes"
-          onChange={handleChange}
+          onChange={((event) => {setWorkoutNotes(event.target.value)})}
         ></textarea>
         <h3>Exercises</h3>
       </form>

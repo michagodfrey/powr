@@ -22,5 +22,10 @@ th {
 
 form {
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
+}
+
+.tbody {
+    display: flex;
+    flex-direction: column;
 }
