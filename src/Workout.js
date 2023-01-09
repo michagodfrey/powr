@@ -3,15 +3,22 @@ import { useState, useEffect } from 'react';
 import { db } from "./firebase-config";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
-const Workout = () => {
+const Workout = ({ user }) => {
     
-    const [ allWorkouts, setAllWorkouts ] = useState([])
+    const [ allWorkouts, setAllWorkouts ] = useState([]);
+
+    const [ newExercise, setNewExercise ] = useState("");
+    const [ newWeight, setNewWeight ] = useState(0);
+    const [ newReps, setNewReps ] = useState(0);
 
     // get all workouts
     useEffect(() => {
       const getWorkouts = async () => {
         try {
-          const snapshot = await getDocs(collection(db, "users", "hwUQMGclPZQCJUO1jgYPDnzQwZp2", "workouts"))
+          const snapshot = await getDocs(
+            // must alter to take user.uid
+            collection(db, "users", "hwUQMGclPZQCJUO1jgYPDnzQwZp2", "workouts")
+          );
           let tempArr = [];
           snapshot.forEach((doc) => {
             tempArr.push({ ...doc.data() });
@@ -24,23 +31,48 @@ const Workout = () => {
       getWorkouts();
     }, []);
 
-    const deleteWorkout = async () => {
-      await deleteDoc(doc(db, "users", "hwUQMGclPZQCJUO1jgYPDnzQwZp2", "workouts", "id"));
+    // need to sort doc id
+    const editWorkout = async (id) => {
+      console.log(id)
     }
 
-    console.log(allWorkouts)
+    // need to alter to accept workout id
+    const deleteWorkout = async (id) => {
+      console.log(id)
+      try {    
+        await deleteDoc(
+          doc(
+            db,
+            "users",
+            "hwUQMGclPZQCJUO1jgYPDnzQwZp2",
+            "workouts",
+            id
+          )
+        );
+        console.log('deleted')
+      } catch (error) {
+        console.log(error.message)
+      }
+      
+    }
+
+    // console.log(user.uid)
 
   return (
     <>
-      <h1>Read, Update & Delete Workout Component</h1>
+      <h1>Read Workout Component</h1>
       <table>          
           {
             allWorkouts.map((workout, index) => {
               return (
-                <>
+                <div key={index}>
+                  <button onClick={() => {deleteWorkout(index)}}>Delete workout</button>
+                  <button onClick={() => {editWorkout(index)}}>Edit Workout</button>
                   <tr>
-                    <th rowSpan={2} onClick={deleteWorkout()}>Exercise</th>
-                    <th colSpan={3}>Workout on {`${workout.date.toString()}`}</th>
+                    <th rowSpan={2}>Exercise</th>
+                    <th colSpan={3}>
+                      Workout on {`${workout.date.toString()}`}
+                    </th>
                     <th>View Notes</th>
                   </tr>
                   <tr>
@@ -49,16 +81,16 @@ const Workout = () => {
                     <th>Total</th>
                     <th>Progress?</th>
                   </tr>
-                    {workout.exercises.map((exercise) => (
-                      <tr>
-                        <td>{exercise?.exercise}</td>
-                        <td>{exercise?.weight}</td>
-                        <td>{exercise?.reps}</td>
-                        <td>{exercise.weight * exercise.reps}</td>
-                        <td>Yes/No</td>
-                      </tr>
-                    ))}
-                </>
+                  {workout.exercises.map((exercise) => (
+                    <tr>
+                      <td>{exercise?.exercise}</td>
+                      <td>{exercise?.weight}</td>
+                      <td>{exercise?.reps}</td>
+                      <td>{exercise.weight * exercise.reps}</td>
+                      <td>Yes/No</td>
+                    </tr>
+                  ))}
+                </div>
               );
             })
           }

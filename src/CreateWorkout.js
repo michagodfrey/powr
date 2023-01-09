@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Exercise from './Exercise';
 
-const CreateWorkout = () => {
+const CreateWorkout = ({ user }) => {
   const [ exerciseComponent, setExerciseComponent ] = useState([]);
   const [ workoutNotes, setWorkoutNotes ] = useState("");
   const [ startDate, setStartDate ] = useState(new Date());
@@ -20,6 +20,8 @@ const CreateWorkout = () => {
         )
       );
     };
+    
+    // console.log(user.uid);
 
   const handleSubmit = async () => {
     // push execise data to array for quick access or find some other way to auto fil on subsequent workouts

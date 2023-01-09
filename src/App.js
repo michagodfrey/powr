@@ -19,6 +19,7 @@ function App() {
     });
   }, [])
   
+  // console.log(user.uid)
   
 
   const register = async () => {
@@ -107,8 +108,8 @@ function App() {
         </div>
       </header>
       <main>
-        <CreateWorkout />
-        <Workout />
+        <CreateWorkout user={user} />
+        <Workout user={user} />
       </main>
       <footer>This is a footer</footer>
     </>
