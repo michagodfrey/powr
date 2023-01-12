@@ -21,7 +21,6 @@ function App() {
   
   // console.log(user.uid)
   
-
   const register = async () => {
     try {
       await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
@@ -34,11 +33,9 @@ function App() {
       .catch((error) => {
         console.log(error.message)
       })
-
     } catch (error) {
       console.log(error.message);
     }
-    
   }
 
   const login = async () => {
@@ -47,7 +44,6 @@ function App() {
     } catch (error) {
       console.log(error.message);
     }
-
   }
 
   const logout = async () => {

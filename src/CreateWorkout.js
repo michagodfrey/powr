@@ -20,8 +20,6 @@ const CreateWorkout = ({ user }) => {
         )
       );
     };
-    
-    // console.log(user.uid);
 
   const handleSubmit = async () => {
     // push execise data to array for quick access or find some other way to auto fil on subsequent workouts
@@ -40,7 +38,7 @@ const CreateWorkout = ({ user }) => {
     }
 
     await addDoc(
-      collection(db, "users/hwUQMGclPZQCJUO1jgYPDnzQwZp2/workouts"),
+      collection(db, `users/${user.uid}/workouts`),
       {
         date: startDate,
         notes: workoutNotes,
