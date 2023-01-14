@@ -1,20 +1,6 @@
-import React, { useState } from 'react';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "./firebase-config";
+import React from 'react';
 
-const Modal = ({ 
-    isModalOpen, 
-    closeModal
-    // setRegisterEmail,
-    // setRegisterPassword,
-    // register
-}) => {
-
-    //  const [registerEmail, setRegisterEmail] = useState("");
-    //  const [registerPassword, setRegisterPassword] = useState("");
+const Modal = ({ isModalOpen, closeModal }) => {
 
     return (
       <div

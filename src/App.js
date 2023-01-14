@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "./firebase-config";
 import { doc, setDoc } from "firebase/firestore";
-import Workout from "./Workout";
+import DisplayWorkouts from "./DisplayWorkouts";
 import CreateWorkout from "./CreateWorkout";
 
 function App() {
@@ -105,7 +105,7 @@ function App() {
       </header>
       <main>
         <CreateWorkout user={user} />
-        <Workout user={user} />
+        <DisplayWorkouts user={user} />
       </main>
       <footer>This is a footer</footer>
     </>
