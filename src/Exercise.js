@@ -1,10 +1,9 @@
 import React from 'react';
 
-const Exercise = () => {
+const Exercise = (key, removeExerciseComponent) => {
 
     return (
-      <form className="exercise-component">
-        <tr>Exercise</tr>
+      <fieldset className="exercise-component">
         <input
           className="exercise"
           name="exercise"
@@ -19,8 +18,8 @@ const Exercise = () => {
         />
         <input className="reps" name="reps" type="number" placeholder="reps" />
         {/* Make delete exercise button */}
-        {/* <button type="submit">confirm exercise</button> */}
-      </form>
+        <button type="button" onClick={() => {removeExerciseComponent(key)}}>Remove exercise</button>
+      </fieldset>
     );
 }
 

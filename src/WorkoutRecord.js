@@ -14,6 +14,8 @@ const WorkoutRecord = ({workout, user}) => {
     } catch (error) {
       console.log(error.message);
     }
+
+    window.location.reload();
   };
 
   return (
