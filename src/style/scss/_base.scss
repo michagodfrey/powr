@@ -1,7 +1,26 @@
+
+$color-primary: #e8772e;
+$color-secondary: #001f3f;
+
+
 * {
     box-sizing: border-box;
     font-size: 20px;
+    font-family: sans-serif;
 }
+
+@mixin tablet {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
 
 .spacer {
     height: 200px;

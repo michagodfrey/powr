@@ -8,14 +8,6 @@ const ExerciseRow = ({exercise, user, workout}) => {
 
       const newData = { ...prev, ...next };
 
-      if (!newData.exercise) {
-        newData.exercise = "Nameless exercise"
-      }
-        
-      if (newData.exercise.length > 30) {
-        newData.exercise = newData.exercise.substring(0, 30);
-      }
-
       if (newData.weight <= 0 || newData.weight > 1000) {
         newData.weight = 1;
       }
@@ -26,7 +18,7 @@ const ExerciseRow = ({exercise, user, workout}) => {
 
       return newData;
 
-    }, {exercise: "", weight: 0, reps: 0});
+    }, {weight: 0, reps: 0});
 
 // add user confirmation. reload after edit
 const editExercise = async (id, exercise, weight, reps) => {
@@ -77,14 +69,7 @@ const editExercise = async (id, exercise, weight, reps) => {
       {isEditing ? (
         <tr>
           <td>
-            <input
-              name="newExercise"
-              type="text"
-              placeholder={exercise.exercise}
-              onChange={(event) => {
-                updateData({...data, exercise: event.target.value});
-              }}
-            />
+            {exercise.exercise}
           </td>
           <td>
             <input

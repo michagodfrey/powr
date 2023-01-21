@@ -3,6 +3,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "./firebase-config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import uuid from "react-uuid";
 import Exercise from "./Exercise";
 
 const CreateWorkout = ({ user }) => {
@@ -10,26 +11,23 @@ const CreateWorkout = ({ user }) => {
   const [workoutNotes, setWorkoutNotes] = useState("");
   const [startDate, setStartDate] = useState(new Date());
 
-  // add new exercise input field
   const addExerciseComponent = () => {
     setExerciseComponent(
       exerciseComponent.concat(
         <Exercise
-          key={exerciseComponent.length}
-          removeExerciseComponent={removeExerciseComponent}
+          key={uuid()}
+          addExerciseComponent={addExerciseComponent}
         />
       )
     );
   };
 
-  // this is not working
-  const removeExerciseComponent = (key) => {
-    console.log(key);
-    setExerciseComponent(exerciseComponent.filter((item) => item.key !== key));
+  const removeExerciseComponent = () => {
+    setExerciseComponent(exerciseComponent.slice(0, -1));
   };
 
   const handleSubmit = async () => {
-    // push execise data to array for quick access or find some other way to auto fil on subsequent workouts
+    // const 
     const exercise = document.querySelectorAll(".exercise");
     const weight = document.querySelectorAll(".weight");
     const reps = document.querySelectorAll(".reps");
@@ -38,36 +36,37 @@ const CreateWorkout = ({ user }) => {
 
     for (let i = 0; i < exercise.length; i++) {
       if (exercise[i].value.length === 0) {
-        alert("Exercise field cannot be blank");
-        break;
+        exercise[i].classList.add("input-red");
+        alert("All fields must be filled");
+        return;
+      } else {
+        if (exercise[i].value.length > 30) {
+          exercise[i].value = exercise[i].value.substring(0, 30);
+        }
+
+        if (weight[i].value <= 0 || weight[i].value > 1000 || isNaN(weight[i].value)) {
+          weight[i].value = 1;
+        }
+
+        if (reps[i].value <= 0 || reps[i].value > 1000) {
+          reps[i].value = 1;
+        }
+
+        tempList.push({
+          exercise: exercise[i].value,
+          weight: weight[i].value,
+          reps: reps[i].value,
+        });
       }
 
-      if (exercise[i].value.length > 30) {
-        exercise[i].value = exercise[i].value.substring(0, 30);
-      }
-
-      if (weight[i].value <= 0 || weight[i].value > 1000) {
-        weight[i].value = 1;
-      }
-
-      if (reps[i].value <= 0 || reps[i].value > 1000) {
-        reps[i].value = 1;
-      }
-
-      tempList.push({
-        exercise: exercise[i].value,
-        weight: weight[i].value,
-        reps: reps[i].value,
+      await addDoc(collection(db, `users/${user.uid}/workouts`), {
+        date: startDate,
+        notes: workoutNotes,
+        exercises: [...tempList],
       });
-    }
 
-    await addDoc(collection(db, `users/${user.uid}/workouts`), {
-      date: startDate,
-      notes: workoutNotes,
-      exercises: [...tempList],
-    });
-
-    window.location.reload();
+      window.location.reload();
+      }
   };
 
   return (
@@ -95,6 +94,12 @@ const CreateWorkout = ({ user }) => {
       {exerciseComponent}
       <div>
         <button onClick={addExerciseComponent}>Add exercise</button>
+        {exerciseComponent.length > 0 ? (
+          <button onClick={removeExerciseComponent}>Remove exercise</button>
+        ) : null}
+        {
+          
+        }
         <button onClick={handleSubmit}>Add workout</button>
       </div>
     </div>

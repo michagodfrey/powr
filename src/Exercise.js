@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Exercise = (key, removeExerciseComponent) => {
+const Exercise = () => {
 
     return (
       <fieldset className="exercise-component">
@@ -17,8 +17,6 @@ const Exercise = (key, removeExerciseComponent) => {
           placeholder="weight"
         />
         <input className="reps" name="reps" type="number" placeholder="reps" />
-        {/* Make delete exercise button */}
-        <button type="button" onClick={() => {removeExerciseComponent(key)}}>Remove exercise</button>
       </fieldset>
     );
 }
