@@ -19,26 +19,72 @@
 }
 
 .modal-container {
-    background: lightblue;
+    background: $color-secondary;
     border-radius: 0.25rem;
     width: 90vw;
-    height: 300px;
-    max-width: 650px;
+    max-width: 600px;
     text-align: center;
-    display: grid;
-    place-items: center;
     position: relative;
+    display: flex;
 }
 
 .close-modal-btn {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding-top: .75rem;
-    border: 2px solid gold;
+    top: 0;
+    right: 0;
+    height: 50px;
     cursor: pointer;
+    background-color: $color-secondary;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
 }
 
 .close-modal-btn svg {
     fill: crimson;
+}
+
+.modal-tab {
+    display: flex;
+
+    & input, button {
+        margin: .5rem 0;
+    }
+
+    & input[type="radio"] {
+        display: none;
+    }
+
+    & label {
+        background-color: gray;
+        color: white;
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        font-weight: bold;
+        padding-top: 13px;
+        cursor: pointer;
+    }
+
+    & input[id^="tab"]:checked+label {
+        background-color: $color-primary;
+    }
+
+    & .modal-content {
+        background-color: white;
+        position: absolute;
+        left: 0;
+        top: 50px;
+        display: none;
+    }
+
+    & input[id^="tab"]:checked~.modal-content {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        width: 100%;
+    }
+
+
 }

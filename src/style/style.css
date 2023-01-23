@@ -380,6 +380,7 @@ header img {
 }
 .main-public img {
   width: 100%;
+  max-width: 600px;
   height: auto;
 }
 
@@ -393,19 +394,6 @@ footer {
 }
 footer img {
   margin: 0 0.5rem;
-}
-
-.login-with-email-btn {
-  transition: background-color 0.3s, box-shadow 0.3s;
-  margin: 1rem 0 2rem;
-  padding: 12px 16px 12px;
-  border: none;
-  border-radius: 3px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-  color: #757575;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 /* Google sign in button from https: //codepen.io/mupkoo/pen/YgddgB */
@@ -467,28 +455,66 @@ footer img {
 }
 
 .modal-container {
-  background: lightblue;
+  background: #001f3f;
   border-radius: 0.25rem;
   width: 90vw;
-  height: 300px;
-  max-width: 650px;
+  max-width: 600px;
   text-align: center;
-  display: grid;
-  place-items: center;
   position: relative;
+  display: flex;
 }
 
 .close-modal-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding-top: 0.75rem;
-  border: 2px solid gold;
+  top: 0;
+  right: 0;
+  height: 50px;
   cursor: pointer;
+  background-color: #001f3f;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
 }
 
 .close-modal-btn svg {
   fill: crimson;
+}
+
+.modal-tab {
+  display: flex;
+}
+.modal-tab input, .modal-tab button {
+  margin: 0.5rem 0;
+}
+.modal-tab input[type=radio] {
+  display: none;
+}
+.modal-tab label {
+  background-color: gray;
+  color: white;
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 13px;
+  cursor: pointer;
+}
+.modal-tab input[id^=tab]:checked + label {
+  background-color: #e8772e;
+}
+.modal-tab .modal-content {
+  background-color: white;
+  position: absolute;
+  left: 0;
+  top: 50px;
+  display: none;
+}
+.modal-tab input[id^=tab]:checked ~ .modal-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
 }
 
 table {
