@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FaFacebookF, FaGoogle, FaTimes } from "react-icons/fa";
 
 const Modal = ({
   isModalOpen,
@@ -9,83 +10,110 @@ const Modal = ({
   setLoginEmail,
   setLoginPassword,
   login,
+  signInWithGoogle,
+  resetPassword
 }) => {
+  const [resetEmail, setResetEmail] = useState("");
+
   return (
     <div
       className={`${
-        isModalOpen ? "modal-overlay show-modal" : "modal-overlay"
+        isModalOpen ? "modal-overlay slide-in-top show-modal" : "modal-overlay slide-out-top"
       }`}
     >
-      <div className="modal-container">
-        <div className="modal-tab">
-          <input
-            className="radio"
-            id="tab1"
-            name="modal-tab"
-            type="radio"
-            checked
-          />
-          <label for="tab1">Log in</label>
-          <div className="modal-content">
-            <button
-              className="login-with-google-btn"
-              // onClick={signInWithGoogle}
-            >
-              Continue with Google
-            </button>
+        <div className="modal-container">
+          <div className="modal-tab">
             <input
-              type="email"
-              placeholder="email"
-              onChange={(event) => {
-                setLoginEmail(event.target.value);
-              }}
+              className="radio"
+              id="tab1"
+              name="modal-tab"
+              type="radio"
+              defaultChecked
             />
-            <input
-              type="password"
-              placeholder="password"
-              onChange={(event) => {
-                setLoginPassword(event.target.value);
-              }}
-            />
-            <button onClick={login}>Login</button>
+            <label htmlFor="tab1" className="label-radio">
+              Log in
+            </label>
+            <div className="modal-content">
+              <button className="ex-auth-btn facebook">
+                <FaFacebookF />
+                Continue with Facebook
+              </button>
+              <button
+                className="ex-auth-btn google"
+                onClick={signInWithGoogle}
+              >
+                <FaGoogle />
+                Continue with Google
+              </button>
+              <p>Login in with email</p>
+              <input
+                type="email"
+                placeholder="email"
+                onChange={(event) => {
+                  setLoginEmail(event.target.value);
+                }}
+              />
+              <input
+                type="password"
+                placeholder="password"
+                onChange={(event) => {
+                  setLoginPassword(event.target.value);
+                }}
+              />
+              <button onClick={login}>Login</button>
+              <input id="pw-reset" type="checkbox" />
+              <label htmlFor="pw-reset" className="label-checkbox">
+                Forgot your password?
+              </label>
+              <div id="reset" className="modal-pw-reset" onChange={(event) => {
+                setResetEmail(event.target.value);
+              }}>
+                <input type="email" placeholder="email" />
+                <button onClick={() => resetPassword(resetEmail)}>Go</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="modal-tab">
-          <input className="radio" id="tab2" name="modal-tab" type="radio" />
-          <label for="tab2">Sign up</label>
-          <div className="modal-content">
-            <button
-              className="login-with-google-btn"
-              // onClick={signInWithGoogle}
-            >
-              Continue with Google
-            </button>
-            <input
-              type="email"
-              placeholder="email"
-              onChange={(event) => {
-                setRegisterEmail(event.target.value);
-              }}
-            />
-            <input
-              type="password"
-              placeholder="password"
-              onChange={(event) => {
-                setRegisterPassword(event.target.value);
-              }}
-            />
-            <input
-              type="password"
-              placeholder="confirm password"
-            />
-            <button onClick={register}>Sign up</button>
+          <div className="modal-tab">
+            <input className="radio" id="tab2" name="modal-tab" type="radio" />
+            <label htmlFor="tab2" className="label-radio">
+              Sign up
+            </label>
+            <div className="modal-content">
+              <button className="ex-auth-btn facebook">
+                <FaFacebookF />
+                Continue with Facebook
+              </button>
+              <button
+                className="ex-auth-btn google"
+                // onClick={signInWithGoogle}
+              >
+                <FaGoogle />
+                Continue with Google
+              </button>
+              <p>Sign up with email</p>
+              <input
+                type="email"
+                placeholder="email"
+                onChange={(event) => {
+                  setRegisterEmail(event.target.value);
+                }}
+              />
+              <input
+                type="password"
+                placeholder="password"
+                onChange={(event) => {
+                  setRegisterPassword(event.target.value);
+                }}
+              />
+              <input type="password" placeholder="confirm password" />
+              <button onClick={register}>Sign up</button>
+            </div>
           </div>
-        </div>
 
-        <button className="close-modal-btn" onClick={closeModal}>
-          close
-        </button>
-      </div>
+          <button className="close-modal-btn" onClick={closeModal}>
+            <FaTimes />
+          </button>
+        </div>
     </div>
   );
 };

@@ -3,10 +3,12 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
+  sendPasswordResetEmail
 } from "firebase/auth";
-import { auth, db } from "./firebase-config";
-import { doc, setDoc } from "firebase/firestore";
+import { db, auth, googleProvider } from "./firebase-config";
+import { collection, doc, query, setDoc, where } from "firebase/firestore";
 import DisplayWorkouts from "./DisplayWorkouts";
 import CreateWorkout from "./CreateWorkout";
 import Modal from "./Modal";
@@ -19,13 +21,16 @@ function App() {
   const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // sign in modal functions
   const openModal = () => {
     setIsModalOpen(true)
   }
 
   const closeModal = () => {
+
     setIsModalOpen(false);
   }
+
   // display current user email
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -33,8 +38,7 @@ function App() {
     });
   }, []);
 
-  // console.log(user.uid)
-
+  // auth functions
   const register = async () => {
     try {
       await createUserWithEmailAndPassword(
@@ -64,10 +68,51 @@ function App() {
     }
   };
 
+  // this is not currently working
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+    .then(async (res) => {
+
+      const registerName = res.user.displayName;
+      const registerEmail = res.user.email;
+      const registerImage = res.user.photoURL;
+
+      const usersCol = collection(db, "users");
+      const userExists = query(usersCol, where("email", "==", registerEmail));
+
+      if (!userExists) {
+        const ref = doc(db, "users", res.user.uid);
+        await setDoc(ref, {
+          email: registerEmail,
+          name: registerName,
+          image: registerImage,
+        });
+      }
+    })
+    .then(() => {
+      closeModal();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      closeModal();
+    });
+  }
+
   const logout = async () => {
     await signOut(auth);
     console.log("signed out");
   };
+
+  const resetPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      closeModal();
+      console.log(`reset email sent to ${email}`)
+    })
+    .catch((error) => {
+      console.log(error.message);
+    })
+  }
 
   return (
     <>
@@ -91,6 +136,8 @@ function App() {
                 setLoginEmail={setLoginEmail}
                 setLoginPassword={setLoginPassword}
                 login={login}
+                signInWithGoogle={signInWithGoogle}
+                resetPassword={resetPassword}
               />
             </div>
           )}
