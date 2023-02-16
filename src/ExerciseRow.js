@@ -1,12 +1,12 @@
-import React, {useState, useReducer} from 'react';
-import { db } from "./firebase-config";
-import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import React, {useState, useReducer} from "react";
+import {db} from "./firebase-config";
+import {doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore";
 
 const ExerciseRow = ({exercise, user, workout}) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [data, updateData] = useReducer((prev, next) => {
-
-      const newData = { ...prev, ...next };
+  const [isEditing, setIsEditing] = useState(false);
+  const [data, updateData] = useReducer(
+    (prev, next) => {
+      const newData = {...prev, ...next};
 
       if (newData.weight <= 0 || newData.weight > 1000) {
         newData.weight = 1;
@@ -17,12 +17,12 @@ const ExerciseRow = ({exercise, user, workout}) => {
       }
 
       return newData;
+    },
+    {weight: 0, reps: 0}
+  );
 
-    }, {weight: 0, reps: 0});
-
-// add user confirmation. reload after edit
-const editExercise = async (id, exercise, weight, reps) => {
-    
+  // add user confirmation. reload after edit
+  const editExercise = async (id, exercise, weight, reps) => {
     const docRef = doc(db, "users", `${user.uid}`, "workouts", id);
 
     try {
@@ -42,13 +42,12 @@ const editExercise = async (id, exercise, weight, reps) => {
 
     setIsEditing(!isEditing);
     window.location.reload();
-};
+  };
 
   // add user confirmation, reload after edit
   const deleteExercise = async (id, exercise, weight, reps) => {
-
     const docRef = doc(db, "users", `${user.uid}`, "workouts", id);
-    
+
     try {
       await updateDoc(docRef, {
         exercises: arrayRemove({
@@ -67,11 +66,11 @@ const editExercise = async (id, exercise, weight, reps) => {
   return (
     <>
       {isEditing ? (
-        <tr>
-          <td>
+        <tr className="">
+          <td className="">
             {exercise.exercise}
           </td>
-          <td>
+          <td className="">
             <input
               name="newWeight"
               type="number"
@@ -81,7 +80,7 @@ const editExercise = async (id, exercise, weight, reps) => {
               }}
             />
           </td>
-          <td>
+          <td className="">
             <input
               name="newReps"
               type="number"
@@ -91,9 +90,9 @@ const editExercise = async (id, exercise, weight, reps) => {
               }}
             />
           </td>
-          <td>Cell</td>
-          <td>Cell</td>
-          <td>
+          <td className="">Cell</td>
+          <td className="">Cell</td>
+          <td className="">
             <button
               onClick={() => {
                 editExercise(
@@ -107,7 +106,7 @@ const editExercise = async (id, exercise, weight, reps) => {
               Update
             </button>
           </td>
-          <td>
+          <td className="">
             <button
               onClick={() => {
                 setIsEditing(!isEditing);
@@ -119,12 +118,16 @@ const editExercise = async (id, exercise, weight, reps) => {
         </tr>
       ) : (
         <tr>
-          <td>{exercise?.exercise}</td>
-          <td>{exercise?.weight}</td>
-          <td>{exercise?.reps}</td>
-          <td>{exercise.exercise ? exercise.weight * exercise.reps : "N/A"}</td>
-          <td>Yes/No</td>
-          <td>
+          <td className="">
+            {exercise?.exercise}
+          </td>
+          <td className="">{exercise?.weight}</td>
+          <td className="">{exercise?.reps}</td>
+          <td className="">
+            {exercise.exercise ? exercise.weight * exercise.reps : "N/A"}
+          </td>
+          <td className="">Yes/No</td>
+          <td className="">
             <button
               onClick={() => {
                 deleteExercise(
@@ -138,7 +141,7 @@ const editExercise = async (id, exercise, weight, reps) => {
               Delete
             </button>
           </td>
-          <td>
+          <td className="">
             <button
               onClick={() => {
                 setIsEditing(!isEditing);
@@ -151,6 +154,6 @@ const editExercise = async (id, exercise, weight, reps) => {
       )}
     </>
   );
-}
+};
 
 export default ExerciseRow;

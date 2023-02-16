@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { db, auth, googleProvider } from "./firebase-config";
 import { collection, doc, query, setDoc, where } from "firebase/firestore";
@@ -23,13 +23,12 @@ function App() {
 
   // sign in modal functions
   const openModal = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const closeModal = () => {
-
     setIsModalOpen(false);
-  }
+  };
 
   // display current user email
   useEffect(() => {
@@ -68,35 +67,34 @@ function App() {
     }
   };
 
-  // this is not currently working
+  // does not create new user in users
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
-    .then(async (res) => {
+      .then(async (res) => {
+        const registerName = res.user.displayName;
+        const registerEmail = res.user.email;
+        const registerImage = res.user.photoURL;
 
-      const registerName = res.user.displayName;
-      const registerEmail = res.user.email;
-      const registerImage = res.user.photoURL;
+        const usersCol = collection(db, "users");
+        const userExists = query(usersCol, where("email", "==", registerEmail));
 
-      const usersCol = collection(db, "users");
-      const userExists = query(usersCol, where("email", "==", registerEmail));
-
-      if (!userExists) {
-        const ref = doc(db, "users", res.user.uid);
-        await setDoc(ref, {
-          email: registerEmail,
-          name: registerName,
-          image: registerImage,
-        });
-      }
-    })
-    .then(() => {
-      closeModal();
-    })
-    .catch((error) => {
-      console.log(error.message);
-      closeModal();
-    });
-  }
+        if (!userExists) {
+          const ref = doc(db, "users", res.user.uid);
+          await setDoc(ref, {
+            email: registerEmail,
+            name: registerName,
+            image: registerImage,
+          });
+        }
+      })
+      .then(() => {
+        closeModal();
+      })
+      .catch((error) => {
+        console.log(error.message);
+        closeModal();
+      });
+  };
 
   const logout = async () => {
     await signOut(auth);
@@ -105,19 +103,19 @@ function App() {
 
   const resetPassword = (email) => {
     sendPasswordResetEmail(auth, email)
-    .then(() => {
-      closeModal();
-      console.log(`reset email sent to ${email}`)
-    })
-    .catch((error) => {
-      console.log(error.message);
-    })
-  }
+      .then(() => {
+        closeModal();
+        console.log(`reset email sent to ${email}`);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
-    <>
-      <header>
-        <img src={require("./images/powr-logo.webp")} alt="POWR logo" />
+    <div className="box-border">
+      <header className="bg-primary flex flex-col items-center md:flex-row md:justify-around">
+        <img className="w-full max-w-md h-auto" src={require("./images/powr-logo.webp")} alt="POWR logo" />
         <div>
           {user ? (
             <>
@@ -125,7 +123,7 @@ function App() {
               <button onClick={logout}>Sign out</button>
             </>
           ) : (
-            <div className="header-public">
+            <div className="flex flex-col">
               <button onClick={openModal}>Login/Signup</button>
               <Modal
                 isModalOpen={isModalOpen}
@@ -143,21 +141,21 @@ function App() {
           )}
         </div>
       </header>
-      <main>
+      <main className="items-center flex flex-col m-10 bg-beige">
         {user ? (
           <>
             <CreateWorkout user={user} />
             <DisplayWorkouts user={user} />
           </>
         ) : (
-          <div className="main-public">
+          <div className="text-center px-4">
             <h1>POWR</h1>
             <span>Progressive Overload Workout Recorder</span>
             <p>
               POWR is a workout tracking tool that helps users achieve
               progressive overload.
             </p>
-            <p>
+            <p className="font-bold">
               Progressive overload is a strength training technique where the
               resistance or weight is gradually increased over time to
               continuously challenge the body and promote muscle adaptation and
@@ -169,6 +167,7 @@ function App() {
               in order to challenge their muscles and promote growth.
             </p>
             <img
+              className="w-full max-w-lg h-auto m-auto"
               src={require("./images/placeholder.png")}
               alt="Placeholder img"
             />
@@ -187,7 +186,7 @@ function App() {
           </div>
         )}
       </main>
-      <footer>
+      <footer className="bg-secondary text-white grid place-content-center h-80">
         <div>
           {/* <a href="#">
             <img
@@ -220,7 +219,7 @@ function App() {
         </div>
         <span>Built By Michael Godfrey</span>
       </footer>
-    </>
+    </div>
   );
 }
 

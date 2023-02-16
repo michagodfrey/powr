@@ -1,10 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { db } from "./firebase-config";
-import { collection, getDocs } from "firebase/firestore";
-import WorkoutRecord from './WorkoutRecord';
+import React from "react";
+import {useState, useEffect} from "react";
+import {db} from "./firebase-config";
+import {collection, getDocs} from "firebase/firestore";
+import WorkoutRecord from "./WorkoutRecord";
 
-const DisplayWorkouts = ({ user }) => {
+const DisplayWorkouts = ({user}) => {
   const [allWorkouts, setAllWorkouts] = useState([]);
 
   // get all workouts
@@ -16,7 +16,7 @@ const DisplayWorkouts = ({ user }) => {
         );
         let tempArr = [];
         snapshot.forEach((doc) => {
-          tempArr.push({ ...doc.data(), id: doc.id });
+          tempArr.push({...doc.data(), id: doc.id});
         });
         setAllWorkouts([...tempArr]);
       } catch (error) {
@@ -29,15 +29,15 @@ const DisplayWorkouts = ({ user }) => {
   return (
     <>
       <h1>Display Workouts Component</h1>
-      <table>
+      <table className="">
         {allWorkouts.map((workout) => {
           return (
-           <WorkoutRecord key={workout.id} workout={workout} user={user} />
+            <WorkoutRecord key={workout.id} workout={workout} user={user} />
           );
         })}
       </table>
     </>
   );
-}
+};
 
 export default DisplayWorkouts;

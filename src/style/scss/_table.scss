@@ -1,7 +1,6 @@
 table {
     border-collapse: collapse;
     width: 100%;
-    
 }
 
 th,
@@ -22,7 +21,7 @@ th {
 
 form {
     display: flex;
-    // flex-direction: row;
+    flex-direction: row;
 }
 
 .tbody {
