@@ -9,8 +9,9 @@ module.exports = {
       white: "#ffffff",
       beige: "#F5F5DC",
       gray: "#808080",
-      black: "000000",
+      black: "#000000",
       table: "#4CAF50",
+      textColor: "#212f3d"
     },
     extend: {},
   },

@@ -18,12 +18,14 @@ const Modal = ({
   return (
     <div
       className={`${
-        isModalOpen
-          ? "modal-overlay slide-in-top show-modal"
-          : "modal-overlay slide-out-top"
+        isModalOpen ? "modal-overlay show-modal" : "modal-overlay"
       }`}
     >
-      <div className="modal-container">
+      <div
+        className={`modal-container ${
+          isModalOpen ? "slide-in-top" : "slide-out-top"
+        }`}
+      >
         <div className="modal-tab">
           <input
             className="radio"
@@ -36,14 +38,11 @@ const Modal = ({
             Log in
           </label>
           <div className="modal-content">
-            <button className="ex-auth-btn facebook md:text-lg md:pr-1.5">
+            <button className="ex-auth-btn facebook">
               <FaFacebookF />
               Continue with Facebook
             </button>
-            <button
-              className="ex-auth-btn google md:text-lg md:pr-1.5"
-              onClick={signInWithGoogle}
-            >
+            <button className="ex-auth-btn google" onClick={signInWithGoogle}>
               <FaGoogle />
               Continue with Google
             </button>
@@ -62,7 +61,9 @@ const Modal = ({
                 setLoginPassword(event.target.value);
               }}
             />
-            <button onClick={login}>Login</button>
+            <button className="sign-log-btn" onClick={login}>
+              Login
+            </button>
             <input id="pw-reset" type="checkbox" />
             <label htmlFor="pw-reset" className="label-checkbox">
               Forgot your password?
@@ -85,12 +86,12 @@ const Modal = ({
             Sign up
           </label>
           <div className="modal-content">
-            <button className="ex-auth-btn md:text-lg md:pr-1.5 facebook">
+            <button className="ex-auth-btn facebook">
               <FaFacebookF />
               Continue with Facebook
             </button>
             <button
-              className="ex-auth-btn google md:text-lg md:pr-1.5"
+              className="ex-auth-btn google"
               // onClick={signInWithGoogle}
             >
               <FaGoogle />
@@ -112,10 +113,11 @@ const Modal = ({
               }}
             />
             <input type="password" placeholder="confirm password" />
-            <button onClick={register}>Sign up</button>
+            <button className="sign-log-btn" onClick={register}>
+              Sign up
+            </button>
           </div>
         </div>
-
         <button className="close-modal-btn" onClick={closeModal}>
           <FaTimes />
         </button>
