@@ -10,8 +10,11 @@ module.exports = {
       beige: "#F5F5DC",
       gray: "#808080",
       black: "#000000",
-      table: "#4CAF50",
-      textColor: "#212f3d"
+      table: "#d16b29",
+      textColor: "#212f3d",
+      warning: "#FF0000",
+      yellow: "#FFFF00",
+      
     },
     extend: {},
   },

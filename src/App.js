@@ -115,12 +115,22 @@ function App() {
 
   return (
     <div className="box-border text-textColor">
-      <header className="bg-primary">
+      <header>
         {user ? (
-          <>
-            <span>{user.email}</span>
-            <button onClick={logout}>Sign out</button>
-          </>
+          <div className="bg-secondary w-full p-4 flex items-center justify-between">
+            <img
+              className="max-h-12 sm:max-h-16"
+              src={require("./images/powr-logo-noBG.webp")}
+              alt="POWR logo"
+            />
+            <span className="text-white mx-4 text-lg sm:text-2xl">{user.email}</span>
+            <button
+              className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1"
+              onClick={logout}
+            >
+              Sign out
+            </button>
+          </div>
         ) : (
           <div className="bg-secondary w-full p-4 flex items-center justify-between">
             <img
@@ -148,12 +158,9 @@ function App() {
             />
           </div>
         )}
-        
       </header>
       <main className="items-center flex flex-col bg-beige">
-        <h1 className="text-[0px]">
-          Progressive Overload Workout Recorder
-        </h1>
+        <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         {user ? (
           <>
             <CreateWorkout user={user} />
@@ -164,7 +171,6 @@ function App() {
         )}
       </main>
       <footer className="bg-secondary text-white grid place-content-center h-24">
-        <div></div>
         <span>&#169; 2023 Progressive Overload Workout Tracker</span>
       </footer>
     </div>

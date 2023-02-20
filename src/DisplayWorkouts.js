@@ -29,7 +29,7 @@ const DisplayWorkouts = ({user}) => {
   return (
     <>
       <h1>Display Workouts Component</h1>
-      <table className="">
+      <table className="w-full">
         {allWorkouts.map((workout) => {
           return (
             <WorkoutRecord key={workout.id} workout={workout} user={user} />

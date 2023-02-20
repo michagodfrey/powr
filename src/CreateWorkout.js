@@ -27,7 +27,6 @@ const CreateWorkout = ({ user }) => {
   };
 
   const handleSubmit = async () => {
-    // const 
     const exercise = document.querySelectorAll(".exercise");
     const weight = document.querySelectorAll(".weight");
     const reps = document.querySelectorAll(".reps");
@@ -70,8 +69,8 @@ const CreateWorkout = ({ user }) => {
   };
 
   return (
-    <div>
-      <h1>Create Workout component</h1>
+    <div className="border">
+      <h2>Create Workout component</h2>
       <h2>Add new workout</h2>
       <form>
         <DatePicker
@@ -92,15 +91,23 @@ const CreateWorkout = ({ user }) => {
         <h3>Exercises</h3>
       </form>
       {exerciseComponent}
-      <div>
-        <button onClick={addExerciseComponent}>Add exercise</button>
+      <div className="flex justify-between">
+        <button className="bg-primary m-4" onClick={addExerciseComponent}>
+          Add exercise
+        </button>
         {exerciseComponent.length > 0 ? (
-          <button onClick={removeExerciseComponent}>Remove exercise</button>
+          <>
+            <button
+              className="bg-gray text-white m-4"
+              onClick={removeExerciseComponent}
+            >
+              Remove exercise
+            </button>
+            <button className="bg-black text-white m-4" onClick={handleSubmit}>
+              Add workout
+            </button>
+          </>
         ) : null}
-        {
-          
-        }
-        <button onClick={handleSubmit}>Add workout</button>
       </div>
     </div>
   );

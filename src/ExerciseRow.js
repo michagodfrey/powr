@@ -66,11 +66,9 @@ const ExerciseRow = ({exercise, user, workout}) => {
   return (
     <>
       {isEditing ? (
-        <tr className="">
-          <td className="">
-            {exercise.exercise}
-          </td>
-          <td className="">
+        <tr>
+          <td className="border p-2">{exercise.exercise}</td>
+          <td className="border p-2">
             <input
               name="newWeight"
               type="number"
@@ -80,7 +78,7 @@ const ExerciseRow = ({exercise, user, workout}) => {
               }}
             />
           </td>
-          <td className="">
+          <td className="border p-2">
             <input
               name="newReps"
               type="number"
@@ -90,10 +88,11 @@ const ExerciseRow = ({exercise, user, workout}) => {
               }}
             />
           </td>
-          <td className="">Cell</td>
-          <td className="">Cell</td>
-          <td className="">
+          <td className="border p-2">Cell</td>
+          <td className="border p-2">Cell</td>
+          <td className="border p-2">
             <button
+              className="bg-black text-white"
               onClick={() => {
                 editExercise(
                   workout.id,
@@ -106,8 +105,9 @@ const ExerciseRow = ({exercise, user, workout}) => {
               Update
             </button>
           </td>
-          <td className="">
+          <td className="border p-2">
             <button
+              className="bg-yellow"
               onClick={() => {
                 setIsEditing(!isEditing);
               }}
@@ -118,17 +118,16 @@ const ExerciseRow = ({exercise, user, workout}) => {
         </tr>
       ) : (
         <tr>
-          <td className="">
-            {exercise?.exercise}
-          </td>
-          <td className="">{exercise?.weight}</td>
-          <td className="">{exercise?.reps}</td>
-          <td className="">
+          <td className="border p-2">{exercise?.exercise}</td>
+          <td className="border p-2">{exercise?.weight}</td>
+          <td className="border p-2">{exercise?.reps}</td>
+          <td className="border p-2">
             {exercise.exercise ? exercise.weight * exercise.reps : "N/A"}
           </td>
-          <td className="">Yes/No</td>
-          <td className="">
+          <td className="border p-2">Yes/No</td>
+          <td className="border p-2">
             <button
+              className="bg-warning"
               onClick={() => {
                 deleteExercise(
                   workout.id,
@@ -141,8 +140,9 @@ const ExerciseRow = ({exercise, user, workout}) => {
               Delete
             </button>
           </td>
-          <td className="">
+          <td className="border p-2">
             <button
+              className="bg-yellow"
               onClick={() => {
                 setIsEditing(!isEditing);
               }}

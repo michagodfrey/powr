@@ -19,17 +19,18 @@ const WorkoutRecord = ({workout, user}) => {
 
   return (
     <>
-      <tbody className="">
-        <tr className="">
-          <th rowSpan={2} className="">
+      <tbody>
+        <tr className="w-full">
+          <th rowSpan={2} className="border bg-secondary text-white">
             Exercise
           </th>
-          <th colSpan={3} className="">
+          <th colSpan={3} className="border bg-secondary text-white">
             Workout on {`${workout.date.toString()}`}
           </th>
-          <th className="">View Notes</th>
-          <th colSpan={2} className="0">
+          <th className="border bg-secondary text-white">View Notes</th>
+          <th colSpan={2} className="border bg-secondary text-white">
             <button
+            className="bg-warning"
               onClick={() => {
                 deleteWorkout(workout.id);
               }}
@@ -39,11 +40,11 @@ const WorkoutRecord = ({workout, user}) => {
           </th>
         </tr>
         <tr className="">
-          <th className="">Weight</th>
-          <th className="">Reps</th>
-          <th className="">Total</th>
-          <th className="">Progress?</th>
-          <th colSpan={2} className="">
+          <th className="border bg-secondary text-white">Weight</th>
+          <th className="border bg-secondary text-white">Reps</th>
+          <th className="border bg-secondary text-white">Total</th>
+          <th className="border bg-secondary text-white">Progress?</th>
+          <th colSpan={2} className="border bg-secondary text-white">
             Options
           </th>
         </tr>
