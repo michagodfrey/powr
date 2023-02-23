@@ -7,8 +7,8 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import {db, auth, googleProvider} from "./firebase-config";
-import {collection, doc, query, setDoc, where} from "firebase/firestore";
+import {db, auth, googleProvider, facebookProvider} from "./firebase-config";
+import {doc, setDoc} from "firebase/firestore";
 import DisplayWorkouts from "./DisplayWorkouts";
 import CreateWorkout from "./CreateWorkout";
 import Modal from "./Modal";
@@ -68,27 +68,19 @@ function App() {
     }
   };
 
-  // does not create new user in users
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then(async (res) => {
         const registerName = res.user.displayName;
         const registerEmail = res.user.email;
         const registerImage = res.user.photoURL;
+        const ref = doc(db, "users", res.user.uid);
 
-        const usersCol = collection(db, "users");
-        const userExists = query(usersCol, where("email", "==", registerEmail));
-
-        if (!userExists) {
-          const ref = doc(db, "users", res.user.uid);
-          await setDoc(ref, {
-            email: registerEmail,
-            name: registerName,
-            image: registerImage,
-          });
-        }
-      })
-      .then(() => {
+        await setDoc(ref, {
+          email: registerEmail,
+          name: registerName,
+          image: registerImage,
+        });
         closeModal();
       })
       .catch((error) => {
@@ -96,6 +88,18 @@ function App() {
         closeModal();
       });
   };
+
+  const signInWithFacebook = () => {
+    signInWithPopup(auth, facebookProvider)
+    .then(async (res) => {
+      console.log(res);
+      closeModal();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      closeModal();
+    })
+  }
 
   const logout = async () => {
     await signOut(auth);
@@ -154,6 +158,7 @@ function App() {
               setLoginPassword={setLoginPassword}
               login={login}
               signInWithGoogle={signInWithGoogle}
+              signInWithFacebook={signInWithFacebook}
               resetPassword={resetPassword}
             />
           </div>

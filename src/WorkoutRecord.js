@@ -5,7 +5,7 @@ import uuid from "react-uuid";
 import ExerciseRow from "./ExerciseRow";
 
 const WorkoutRecord = ({workout, user}) => {
-  // add button and user confirmation and reload
+  // add user confirmation
   const deleteWorkout = async (id) => {
     try {
       await deleteDoc(doc(db, "users", `${user.uid}`, "workouts", id));
@@ -20,7 +20,7 @@ const WorkoutRecord = ({workout, user}) => {
   return (
     <>
       <tbody>
-        <tr className="w-full">
+        <tr className="">
           <th rowSpan={2} className="border bg-secondary text-white">
             Exercise
           </th>
@@ -30,7 +30,7 @@ const WorkoutRecord = ({workout, user}) => {
           <th className="border bg-secondary text-white">View Notes</th>
           <th colSpan={2} className="border bg-secondary text-white">
             <button
-            className="bg-warning"
+              className="bg-warning"
               onClick={() => {
                 deleteWorkout(workout.id);
               }}

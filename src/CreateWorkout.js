@@ -26,13 +26,13 @@ const CreateWorkout = ({ user }) => {
     setExerciseComponent(exerciseComponent.slice(0, -1));
   };
 
+  // make it so it doesn't rerender page
   const handleSubmit = async () => {
     const exercise = document.querySelectorAll(".exercise");
     const weight = document.querySelectorAll(".weight");
     const reps = document.querySelectorAll(".reps");
 
     let tempList = [];
-
     for (let i = 0; i < exercise.length; i++) {
       if (exercise[i].value.length === 0) {
         exercise[i].classList.add("input-red");
@@ -43,7 +43,11 @@ const CreateWorkout = ({ user }) => {
           exercise[i].value = exercise[i].value.substring(0, 30);
         }
 
-        if (weight[i].value <= 0 || weight[i].value > 1000 || isNaN(weight[i].value)) {
+        if (
+          weight[i].value <= 0 ||
+          weight[i].value > 1000 ||
+          isNaN(weight[i].value)
+        ) {
           weight[i].value = 1;
         }
 
@@ -57,15 +61,15 @@ const CreateWorkout = ({ user }) => {
           reps: reps[i].value,
         });
       }
+    }
 
-      await addDoc(collection(db, `users/${user.uid}/workouts`), {
-        date: startDate,
-        notes: workoutNotes,
-        exercises: [...tempList],
-      });
+    await addDoc(collection(db, `users/${user.uid}/workouts`), {
+      date: startDate,
+      notes: workoutNotes,
+      exercises: [...tempList],
+    });
 
-      window.location.reload();
-      }
+    window.location.reload();
   };
 
   return (

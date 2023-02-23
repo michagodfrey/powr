@@ -11,6 +11,7 @@ const Modal = ({
   setLoginPassword,
   login,
   signInWithGoogle,
+  signInWithFacebook,
   resetPassword,
 }) => {
   const [resetEmail, setResetEmail] = useState("");
@@ -38,7 +39,10 @@ const Modal = ({
             Log in
           </label>
           <div className="modal-content">
-            <button className="ex-auth-btn facebook">
+            <button
+              className="ex-auth-btn facebook"
+              onClick={signInWithFacebook}
+            >
               <FaFacebookF />
               Continue with Facebook
             </button>
@@ -86,14 +90,14 @@ const Modal = ({
             Sign up
           </label>
           <div className="modal-content">
-            <button className="ex-auth-btn facebook">
+            <button
+              className="ex-auth-btn facebook"
+              onClick={signInWithFacebook}
+            >
               <FaFacebookF />
               Continue with Facebook
             </button>
-            <button
-              className="ex-auth-btn google"
-              // onClick={signInWithGoogle}
-            >
+            <button className="ex-auth-btn google" onClick={signInWithGoogle}>
               <FaGoogle />
               Continue with Google
             </button>
