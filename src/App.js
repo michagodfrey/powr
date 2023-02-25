@@ -9,10 +9,11 @@ import {
 } from "firebase/auth";
 import {db, auth, googleProvider, facebookProvider} from "./firebase-config";
 import {doc, setDoc} from "firebase/firestore";
-import DisplayWorkouts from "./DisplayWorkouts";
-import CreateWorkout from "./CreateWorkout";
 import Modal from "./Modal";
 import PublicDisplay from "./PublicDisplay";
+import WorkoutRoutines from "./WorkoutRoutines";
+// import DisplayWorkouts from "./DisplayWorkouts";
+// import CreateWorkout from "./CreateWorkout";
 
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -81,6 +82,7 @@ function App() {
           name: registerName,
           image: registerImage,
         });
+
         closeModal();
       })
       .catch((error) => {
@@ -92,7 +94,15 @@ function App() {
   const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
     .then(async (res) => {
-      console.log(res);
+      const registerName = res.user.displayName;
+      const registerEmail = res.user.email;
+      const ref = doc(db, "users", res.user.uid);
+
+      await setDoc(ref, {
+        email: registerEmail,
+        name: registerName,
+      });
+
       closeModal();
     })
     .catch((error) => {
@@ -168,15 +178,16 @@ function App() {
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         {user ? (
           <>
-            <CreateWorkout user={user} />
-            <DisplayWorkouts user={user} />
+            <WorkoutRoutines user={user} />
+            {/* <CreateWorkout user={user} /> */}
+            {/* <DisplayWorkouts user={user} /> */}
           </>
         ) : (
           <PublicDisplay />
         )}
       </main>
       <footer className="bg-secondary text-white grid place-content-center h-24">
-        <span>&#169; 2023 Progressive Overload Workout Tracker</span>
+        <span>&#169; 2023 Progressive Overload Workout Recorder</span>
       </footer>
     </div>
   );
