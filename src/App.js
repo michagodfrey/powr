@@ -113,7 +113,6 @@ function App() {
 
   const logout = async () => {
     await signOut(auth);
-    console.log("signed out");
   };
 
   const resetPassword = (email) => {
