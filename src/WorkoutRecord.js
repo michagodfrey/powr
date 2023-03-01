@@ -4,6 +4,7 @@ import {doc, deleteDoc} from "firebase/firestore";
 import uuid from "react-uuid";
 import ExerciseRow from "./ExerciseRow";
 
+// This component was in the first iteration, and displays data from a single workout doc
 const WorkoutRecord = ({workout, user}) => {
   // add user confirmation
   const deleteWorkout = async (id) => {

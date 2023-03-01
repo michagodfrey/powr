@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {FaFacebookF, FaGoogle, FaTimes} from "react-icons/fa";
 
+// Modal used for login/sign up, working as of last commit
 const Modal = ({
   isModalOpen,
   closeModal,

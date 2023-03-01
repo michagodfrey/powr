@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {db} from "./firebase-config";
 import {doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore";
 
+// First iteration component, displays a row of data
 const ExerciseRow = ({exercise, user, workout}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newExercise, setNewExercise] = useState("");

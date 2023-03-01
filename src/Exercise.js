@@ -1,5 +1,6 @@
 import React from 'react';
 
+// First iteration component, will remove from final version
 const Exercise = () => {
 
     return (

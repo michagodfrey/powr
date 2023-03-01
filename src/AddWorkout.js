@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {addDoc, collection} from "firebase/firestore";
+import {doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
 import {db} from "./firebase-config";
 // import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
@@ -7,37 +7,45 @@ import uuid from "react-uuid";
 
 const AddWorkout = ({routine, user}) => {
     const [workoutNotes, setWorkoutNotes] = useState("");
+    // const [weight, setWeight] = useState(0);
+    // const [reps, setReps] = useState(0);
     // const [date, setDate] = useState(new Date());
 
     const exercises = routine.exercises;
 
-    // this does not work
+    // this function is supposed to add data to the document but I can't get it to work
     const addWorkoutData = async () => {
-        const weight = document.querySelectorAll(".weight");
-        const reps = document.querySelectorAll(".reps");
+    //     const weight = document.querySelectorAll(".weight");
+    //     const reps = document.querySelectorAll(".reps");
 
-        let tempList = [];
+    //     let tempList = [];
         
-        for (let i = 0; i < exercises.length; i++) {
-            if (weight[i].value.length < 1 || reps[i].value.length < 1) {
-                alert("Inputs cannot be blank");
-                return;
-            } else {
-                tempList.push({
-                    exercise: exercises[i],
-                    weight: weight[i].value,
-                    reps: reps[i].value,
-                    })
-            }
-        }
-        await addDoc(collection(db,`users/${user.uid}/workouts/${routine.id}/collection`), {
-            // date: date,
-            notes: workoutNotes,
-            data: [...tempList],
-            }
-        );
+    //     for (let i = 0; i < exercises.length; i++) {
+    //         if (weight[i].value.length < 1 || reps[i].value.length < 1) {
+    //             alert("Inputs cannot be blank");
+    //             return;
+    //         } else {
+    //             tempList.push({
+    //                 exercise: exercises[i],
+    //                 weight: weight[i].value,
+    //                 reps: reps[i].value,
+    //                 })
+    //         }
+    //     }
+        
+    //     const docRef = doc(
+    //       db,
+    //       `users/${user.uid}/workouts`,
+    //       routine.id
+    //     );
+    //     await updateDoc(docRef, {
+    //         newValue: "string",
+    //         notes: workoutNotes,
+    //         // data: [...tempList],
+    //         }, {merge: true}
+    //     );
 
-        window.location.reload();
+    //     window.location.reload();
     }
 
     return (
@@ -70,6 +78,7 @@ const AddWorkout = ({routine, user}) => {
                   placehoder="Weight"
                 //   min={1}
                 //   max={1000}
+                // onChange={event => setWeight(event.target.value)}
                 />
                 <label>Reps</label>
                 <input
@@ -77,6 +86,7 @@ const AddWorkout = ({routine, user}) => {
                   name="reps"
                   type="number"
                   placehoder="Reps"
+                  // onChange={event => setReps(event.target.value)}
                 //   min={1}
                 //   max={1000}
                 />

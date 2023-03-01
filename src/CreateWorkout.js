@@ -6,6 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import uuid from "react-uuid";
 import Exercise from "./Exercise";
 
+// This was the first component created to add documents to the workouts collection
+// this was basically a prototype component to learn how firebase works
+// While this works as of the last commit, the data is too simple and 
+// requires manually re-entering exercise names everytime
 const CreateWorkout = ({ user }) => {
   const [exerciseComponent, setExerciseComponent] = useState([]);
   const [workoutNotes, setWorkoutNotes] = useState("");

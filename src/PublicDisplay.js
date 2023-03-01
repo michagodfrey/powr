@@ -1,5 +1,6 @@
 import React from "react";
 
+// The front page of the app the user sees before logging in
 const PublicDisplay = () => {
   return (
     <div className="text-center w-full">

@@ -1,8 +1,12 @@
 import React, {useState} from "react";
-import {addDoc, collection} from "firebase/firestore";
+import {doc, setDoc} from "firebase/firestore";
 import {db} from "./firebase-config";
 import uuid from "react-uuid";
 
+// this component is the sucessor to CreateWorkout, and aims to create
+// a doc with an array of exercises, those exercises will be referred to
+// for successive workouts where the weight and reps are recorded
+// this component works as of the last commmit 
 const CreateRoutine = ({user}) => {
   const [newExercise, setNewExercise] = useState([]);
   const [routine, setRoutine] = useState("");
@@ -47,12 +51,10 @@ const CreateRoutine = ({user}) => {
       }
     }
 
-    await addDoc(collection(db, `users/${user.uid}/workouts`), {
-      routine: routine,
+    await setDoc(doc(db, `users/${user.uid}`, "workouts", routine), {
       notes: routineNotes,
       exercises: [...tempList],
     });
-
     window.location.reload();
   };
 

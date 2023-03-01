@@ -4,6 +4,10 @@ import {db} from "./firebase-config";
 import {collection, getDocs} from "firebase/firestore";
 import WorkoutRecord from "./WorkoutRecord";
 
+// A component made on the first iteration, as of the last commit, it successfully
+// displayed created workouts for the user
+// WorkoutRecord commented out because I was trying new things, but if the user
+// only has data created by CreateWorkout, then it works
 const DisplayWorkouts = ({user}) => {
   const [allWorkouts, setAllWorkouts] = useState([]);
 
@@ -30,11 +34,11 @@ const DisplayWorkouts = ({user}) => {
     <>
       <h1>Display Workouts Component</h1>
       <table className="w-full">
-        {allWorkouts.map((workout) => {
+        {/* {allWorkouts.map((workout) => {
           return (
             <WorkoutRecord key={workout.id} workout={workout} user={user} />
           );
-        })}
+        })} */}
       </table>
     </>
   );

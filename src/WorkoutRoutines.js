@@ -4,6 +4,7 @@ import { db } from "./firebase-config";
 import CreateRoutine from "./CreateRoutine";
 import Routine from "./Routine";
 
+// This component displays the routines
 const WorkoutRoutines = ({ user }) => {
     const [allRoutines, setAllRoutines] = useState([]);
 
@@ -24,6 +25,8 @@ const WorkoutRoutines = ({ user }) => {
         };
         getRoutines();
     }, [user]);
+
+    console.log(allRoutines)
 
     return (
         <div className="w-full">

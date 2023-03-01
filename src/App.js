@@ -12,9 +12,15 @@ import {doc, setDoc} from "firebase/firestore";
 import Modal from "./Modal";
 import PublicDisplay from "./PublicDisplay";
 import WorkoutRoutines from "./WorkoutRoutines";
-// import DisplayWorkouts from "./DisplayWorkouts";
-// import CreateWorkout from "./CreateWorkout";
+import DisplayWorkouts from "./DisplayWorkouts";
+import CreateWorkout from "./CreateWorkout";
+import CreatRoutineUser from "./CreateRoutineUser";
 
+// this component contains the authorization and was planned to have 
+// all other components nested inside.
+// As of the last commit, this component was working
+// If you get problems rendering, chances are it has to do with the
+// user logged in and different data structures compared to active components
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -177,7 +183,10 @@ function App() {
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         {user ? (
           <>
-            <WorkoutRoutines user={user} />
+            <DisplayWorkouts user={user} />
+            <CreatRoutineUser user={user} />
+            {/* <CreateWorkout user={user} /> */}
+            {/* <WorkoutRoutines user={user} /> */}
             {/* <CreateWorkout user={user} /> */}
             {/* <DisplayWorkouts user={user} /> */}
           </>
