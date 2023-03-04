@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
 import uuid from "react-uuid";
 
-// this component was created to add the routine data directly to the user doc
+// this component adds data directly to the user doc
 // this was not the original idea, but was in response the other components not working
-// so far, I cannot see how to add new maps with custom names
 const CreateRoutineUser = ({user}) => {
     const [newExercise, setNewExercise] = useState([]);
     const [routine, setRoutine] = useState("");
-    const [routineNotes, setRoutineNotes] = useState("");
+    const [routineExercises, setRoutineExercises] = useState([]);
 
     const addExercise = () => {
       setNewExercise(
@@ -21,6 +20,7 @@ const CreateRoutineUser = ({user}) => {
             type="text"
             placeholder="Exercise"
             maxLength={30}
+            onChange={event => pushExercise(event)}
           />
         )
       );
@@ -30,37 +30,33 @@ const CreateRoutineUser = ({user}) => {
       setNewExercise(newExercise.slice(0, -1));
     };
 
-    const createUserWorkoutRoutine = async () => {
-      const exercise = document.querySelectorAll(".new-exercise");
+    const pushExercise = (event) => {
+      const newInputValues = [...routineExercises];
+      newInputValues.push(event.target.value);
+      setRoutineExercises(newInputValues);
+    }
+
+    const updateArray = async () => {
 
       if (routine.length < 1) {
         alert("You must give your workout routine a name");
         return;
       }
 
-      let tempList = [];
-
-      for (let i = 0; i < exercise.length; i++) {
-        if (exercise[i].value.length < 1) {
-          exercise[i].classList.add("input-red");
-          alert("Inputs cannot be blank");
-          return;
-        } else {
-          tempList.push(exercise[i].value);
-        }
+      if (routineExercises.length < 1) {
+        alert("You must add at lease one exercise to your routine");
+        return;
       }
-      // this function does upload data to firebase, but I don't know how to create
-      // maps with custom names, it will simply overwrite data.
-      await updateDoc(doc(db, `users/${user.uid}`), {
-        
-        routines: routine,
-        exercises: [...tempList],
-        notes: routineNotes
-      });
+
+      const docRef = doc(db, "users", user.uid);
+      const data = {
+        [routine]: routineExercises
+      };
+      await setDoc(docRef, data, { merge: true });
 
       window.location.reload();
     };
-
+   
     return (
       <div className="bg-gray">
         <h2>Create Routine in User Doc Component</h2>
@@ -75,14 +71,6 @@ const CreateRoutineUser = ({user}) => {
               setRoutine(event.target.value);
             }}
           />
-          <textarea
-            name="routine-notes"
-            placeholder="Workout routine notes"
-            maxLength={200}
-            onChange={(event) => {
-              setRoutineNotes(event.target.value);
-            }}
-          ></textarea>
           <h4>Workout Routine Exercises</h4>
         </form>
         <div className="flex flex-col">
@@ -100,7 +88,7 @@ const CreateRoutineUser = ({user}) => {
               </button>
               <button
                 className="bg-black text-white m-4"
-                onClick={createUserWorkoutRoutine}
+                onClick={updateArray}
               >
                 Create Workout Routine
               </button>
