@@ -36,7 +36,7 @@ const CreateRoutineUser = ({user}) => {
       setRoutineExercises(newInputValues);
     }
 
-    const updateArray = async () => {
+    const addRoutine = async () => {
 
       if (routine.length < 1) {
         alert("You must give your workout routine a name");
@@ -50,8 +50,11 @@ const CreateRoutineUser = ({user}) => {
 
       const docRef = doc(db, "users", user.uid);
       const data = {
-        [routine]: routineExercises
+        routines: {
+          [routine]: routineExercises,
+        },
       };
+
       await setDoc(docRef, data, { merge: true });
 
       window.location.reload();
@@ -88,7 +91,7 @@ const CreateRoutineUser = ({user}) => {
               </button>
               <button
                 className="bg-black text-white m-4"
-                onClick={updateArray}
+                onClick={addRoutine}
               >
                 Create Workout Routine
               </button>

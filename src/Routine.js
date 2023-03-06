@@ -1,7 +1,7 @@
 import React from "react";
 // import {db} from "./firebase-config";
 // import {doc, deleteDoc, updateDoc} from "firebase/firestore";
-import AddWorkout from "./AddWorkout";
+// import AddWorkout from "./AddWorkout";
 // import Workout from"./Workout";
 
 // When supporting components are in place, this component displays a single routine
@@ -38,19 +38,19 @@ const Routine = ({routine, user}) => {
     // }
 
     return (
-        <div className="border" key={routine.id}>
+        <div className="border">
             <h3 className="font-bold">Routine Component</h3>
-            <div>Name: {routine?.id}</div>
-            <div>Notes: {routine?.notes}</div>
+            {/* <div>Name: {routine?.id}</div> */}
+            {/* <div>Notes: {routine?.notes}</div> */}
             <ul>
-                {routine?.exercises.map((exercise) => {
+                {/* {routine?.exercises.map((exercise) => {
                 return (
                     <li key={exercise.toString()}>
                     {exercise}
-                    {/* <button className="bg-warning m-4">Delete Exercise</button> */}
+                    <button className="bg-warning m-4">Delete Exercise</button>
                     </li>
                 );
-                })}
+                })} */}
             </ul>
             {/* <ul>
                 {routine.workout1.map(data => {
@@ -59,7 +59,7 @@ const Routine = ({routine, user}) => {
                 )
             })}
             </ul> */}
-            <AddWorkout routine={routine} user={user} />
+            {/* <AddWorkout routine={routine} user={user} /> */}
             {/* {allWorkouts.map((workout) => {
                 return (
                 <>
@@ -68,9 +68,9 @@ const Routine = ({routine, user}) => {
                 </>
                 );
             })} */}
-            <button className="bg-warning m-4" onClick={deleteRoutine}>
+            {/* <button className="bg-warning m-4" onClick={deleteRoutine}>
                 Delete Routine
-            </button>
+            </button> */}
         </div>
     );
 }

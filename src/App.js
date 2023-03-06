@@ -12,8 +12,8 @@ import {doc, setDoc} from "firebase/firestore";
 import Modal from "./Modal";
 import PublicDisplay from "./PublicDisplay";
 import WorkoutRoutines from "./WorkoutRoutines";
-import DisplayWorkouts from "./DisplayWorkouts";
-import CreateWorkout from "./CreateWorkout";
+// import DisplayWorkouts from "./DisplayWorkouts";
+// import CreateWorkout from "./CreateWorkout";
 import CreatRoutineUser from "./CreateRoutineUser";
 
 // this component contains the authorization and was planned to have 
@@ -183,10 +183,10 @@ function App() {
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         {user ? (
           <>
-            <DisplayWorkouts user={user} />
+            {/* <DisplayWorkouts user={user} /> */}
             <CreatRoutineUser user={user} />
             {/* <CreateWorkout user={user} /> */}
-            {/* <WorkoutRoutines user={user} /> */}
+            <WorkoutRoutines user={user} />
             {/* <CreateWorkout user={user} /> */}
             {/* <DisplayWorkouts user={user} /> */}
           </>
