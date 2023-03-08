@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
-// import CreateRoutine from "./CreateRoutine";
 import Routine from "./Routine";
 
-// This component is not working
+// This component displays the routines created by the user
 const WorkoutRoutines = ({ user }) => {
     const [allRoutines, setAllRoutines] = useState([]);
 
     useEffect(() => {
         const getRoutines = async () => {
+            const docRef = doc(db, "users", `${user.uid}`);
             try {
-                const docRef = doc(db, "users", `${user.uid}`);
                 const docSnap = await getDoc(docRef);
+                // console.log(docSnap.data());
                 setAllRoutines(docSnap.data().routines);
             } catch (error) {
                 console.log(error.message);
             }
         }
         getRoutines();
-    }, [user])
+    }, [user]);
 
-    console.log(allRoutines)
-
-    // all routines cannot be displayed like this
     return (
         <div className="w-full">
             <p>Workout Routines Component</p>
-            {/* <CreateRoutine user={user} /> */}
             <p className="text-2xl">Routines</p>
-            {/* <Routine user={user} /> */}
-            {allRoutines.map(routine => {
+            {Object.entries(allRoutines).map(([routine, exercises], index) => {
                 return (
-                <Routine user={user} />
-                );
+                    <Routine key={index} routine={routine} exercises={exercises} user={user} />
+                )          
             })}
+            <div></div>
         </div>
     );
 }

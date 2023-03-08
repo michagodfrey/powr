@@ -1,20 +1,22 @@
 import React, {useState} from 'react';
 import {doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
 import {db} from "./firebase-config";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import uuid from "react-uuid";
 
-const AddWorkout = ({routine, user}) => {
+const AddWorkout = ({routine, exercises, user}) => {
     const [workoutNotes, setWorkoutNotes] = useState("");
     // const [weight, setWeight] = useState(0);
     // const [reps, setReps] = useState(0);
-    // const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date());
 
-    const exercises = routine.exercises;
+    // console.log('weight', weight)
+    // console.log('reps', reps)
 
-    // this function is supposed to add data to the document but I can't get it to work
+    // cannot use weight and reps as useState becuase there are multiple inputs
     const addWorkoutData = async () => {
+      
     //     const weight = document.querySelectorAll(".weight");
     //     const reps = document.querySelectorAll(".reps");
 
@@ -51,14 +53,15 @@ const AddWorkout = ({routine, user}) => {
     return (
       <div className="border">
         <p>Add Workout Component</p>
+
         <form>
-          {/* <DatePicker
+          <DatePicker
             selected={date}
             dateFormat="dd/MM/yyyy"
             maxDate={new Date()}
             closeOnScroll={true}
             onChange={(date) => setDate(date)}
-          /> */}
+          />
           <textarea
             name="notes"
             placeholder="Workout notes"
@@ -71,25 +74,9 @@ const AddWorkout = ({routine, user}) => {
             return (
               <fieldset key={uuid()}>
                 {exercise}:<label>Weight</label>
-                <input
-                  className="weight"
-                  name="weight"
-                  type="number"
-                  placehoder="Weight"
-                //   min={1}
-                //   max={1000}
-                // onChange={event => setWeight(event.target.value)}
-                />
+                <input type="number" placeholder="weight" />
                 <label>Reps</label>
-                <input
-                  className="reps"
-                  name="reps"
-                  type="number"
-                  placehoder="Reps"
-                  // onChange={event => setReps(event.target.value)}
-                //   min={1}
-                //   max={1000}
-                />
+                <input type="number" placeholder="reps" />
               </fieldset>
             );
           })}
