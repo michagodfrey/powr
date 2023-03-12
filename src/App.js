@@ -14,7 +14,6 @@ import PublicDisplay from "./PublicDisplay";
 import WorkoutRoutines from "./WorkoutRoutines";
 // import DisplayWorkouts from "./DisplayWorkouts";
 // import CreateWorkout from "./CreateWorkout";
-import CreatRoutineUser from "./CreateRoutineUser";
 
 // this component contains the authorization and was planned to have 
 // all other components nested inside.
@@ -134,15 +133,17 @@ function App() {
 
   return (
     <div className="box-border text-textColor">
-      <header>
+      <header className="bg-primary">
         {user ? (
-          <div className="bg-secondary w-full p-4 flex items-center justify-between">
+          <div className="w-full p-4 flex items-center justify-between">
             <img
               className="max-h-12 sm:max-h-16"
               src={require("./images/powr-logo-noBG.webp")}
               alt="POWR logo"
             />
-            <span className="text-white mx-4 text-lg sm:text-2xl">{user.email}</span>
+            {/* <span className="text-black mx-4 text-lg sm:text-2xl">
+              {user.email}
+            </span> */}
             <button
               className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1"
               onClick={logout}
@@ -184,7 +185,6 @@ function App() {
         {user ? (
           <>
             {/* <DisplayWorkouts user={user} /> */}
-            <CreatRoutineUser user={user} />
             {/* <CreateWorkout user={user} /> */}
             <WorkoutRoutines user={user} />
             {/* <CreateWorkout user={user} /> */}
@@ -194,8 +194,20 @@ function App() {
           <PublicDisplay />
         )}
       </main>
-      <footer className="bg-secondary text-white grid place-content-center h-24">
-        <span>&#169; 2023 Progressive Overload Workout Recorder</span>
+      <footer className="bg-primary text-black grid place-content-center h-24">
+        <a href="https://github.com/michagodfrey/powr" >
+          <svg
+            className="hover:fill-white cursor-pointer"
+            width="50px"
+            height="50px"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>github</title>
+            <rect width="24" height="24" fill="none" />
+            <path d="M12,2A10,10,0,0,0,8.84,21.5c.5.08.66-.23.66-.5V19.31C6.73,19.91,6.14,18,6.14,18A2.69,2.69,0,0,0,5,16.5c-.91-.62.07-.6.07-.6a2.1,2.1,0,0,1,1.53,1,2.15,2.15,0,0,0,2.91.83,2.16,2.16,0,0,1,.63-1.34C8,16.17,5.62,15.31,5.62,11.5a3.87,3.87,0,0,1,1-2.71,3.58,3.58,0,0,1,.1-2.64s.84-.27,2.75,1a9.63,9.63,0,0,1,5,0c1.91-1.29,2.75-1,2.75-1a3.58,3.58,0,0,1,.1,2.64,3.87,3.87,0,0,1,1,2.71c0,3.82-2.34,4.66-4.57,4.91a2.39,2.39,0,0,1,.69,1.85V21c0,.27.16.59.67.5A10,10,0,0,0,12,2Z" />
+          </svg>
+        </a>
       </footer>
     </div>
   );

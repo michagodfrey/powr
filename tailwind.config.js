@@ -14,7 +14,7 @@ module.exports = {
       textColor: "#212f3d",
       warning: "#FF0000",
       yellow: "#FFFF00",
-      
+      lightGray: "#ECECEB",
     },
     extend: {},
   },

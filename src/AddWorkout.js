@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
-import {db} from "./firebase-config";
+// import {doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
+// import {db} from "./firebase-config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import uuid from "react-uuid";

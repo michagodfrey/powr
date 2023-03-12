@@ -1,23 +1,29 @@
-import React from "react";
-// import {db} from "./firebase-config";
-// import {doc, deleteDoc, updateDoc} from "firebase/firestore";
-import AddWorkout from "./AddWorkout";
+import React, {useState} from "react";
+import {db} from "./firebase-config";
+import {doc, deleteDoc, updateDoc} from "firebase/firestore";
+// import AddWorkout from "./AddWorkout";
 // import Workout from"./Workout";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import uuid from "react-uuid";
 
-const Routine = ({routine, exercises, user}) => {
+const Routine = ({setWeight, setReps, routine, exercises, user}) => {
+  // disable tabs while editing
+    const [isEditing, setIsEditing] = useState(false);
+    // const [date, setDate] = useState(new Date());
 
-    // delete entire routine 
+    // delete entire routine, as of 12/3 this was found to cease working
     const deleteRoutine = async () => {
-        alert('disabled for production')
-        // try {
-        // await deleteDoc(
-        //     doc(db, "users", `${user.uid}`, "workouts", `${routine.id}`)
-        // );
-        // console.log("deleted routine");
-        // } catch (error) {
-        // console.log(error.message);
-        // }
-        // window.location.reload();
+        // alert('disabled for production')
+        try {
+        await deleteDoc(
+            doc(db, "users", `${user.uid}`, "workouts", `${routine.id}`)
+        );
+        console.log("deleted routine");
+        } catch (error) {
+        console.log(error.message);
+        }
+        window.location.reload();
     };
 
     // this deletes entire array of exercises, want it to delete single elements in the array
@@ -33,23 +39,90 @@ const Routine = ({routine, exercises, user}) => {
     // }
 
     return (
-      <div className="border">
-        <h3 className="font-bold">Routine Component</h3>
-        <div>Routine: {routine}</div>
-        <ul>
-          {exercises.map((exercise) => {
-            return (
-              <li key={exercise.toString()}>
-                {exercise}
-                {/* <button className="bg-warning m-4">Delete Exercise</button> */}
-              </li>
-            );
-          })}
-        </ul>
-        <button className="bg-warning m-4" onClick={deleteRoutine}>
-          Delete Routine
-        </button>
-        <AddWorkout routine={routine} exercises={exercises} user={user} />
+      <div className="border p-4">
+        {isEditing ? (
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-bold">Routine: {routine}</h2>
+              <button className="bg-warning m-4" onClick={deleteRoutine}>
+                Delete Routine
+              </button>
+            </div>
+            <button onClick={() => setIsEditing(!isEditing)}>
+              <img
+                className="h-[25px] lg:h-[35px] transition ease-in-out hover:scale-110"
+                src={"images/settings-gear-part-2-svgrepo-com.svg"}
+              />
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Routine: {routine}</h2>
+              <button onClick={() => setIsEditing(!isEditing)}>
+                <img
+                  className="h-[25px] lg:h-[35px] transition ease-in-out hover:scale-110"
+                  src={"images/settings-gear-part-2-svgrepo-com.svg"}
+                />
+              </button>
+            </div>
+            <h3 className="text-xl">Exercises:</h3>
+            <ul className="flex flex-wrap border">
+              {exercises.map((exercise) => {
+                return (
+                  <li
+                    key={exercise.toString()}
+                    className="m-2 text-lg font-bold p-2"
+                  >
+                    {exercise}
+                    {/* <button className="bg-warning m-4">Delete Exercise</button> */}
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
+
+        <div className="h-[500px] border bg-gray">
+          <p className="p-5 underline">Data display area</p>
+          {/* <form>
+            <DatePicker
+              selected={date}
+              dateFormat="dd/MM/yyyy"
+              maxDate={new Date()}
+              closeOnScroll={true}
+              onChange={(date) => setDate(date)}
+            />
+            {exercises.map((exercise) => {
+              return (
+                <fieldset key={uuid()}>
+                  {exercise}:<label>Weight</label>
+                  <input
+                    type="number"
+                    placeholder="weight"
+                    onChange={(e) => {
+                      setWeight(e.target.value);
+                    }}
+                  />
+                  <label>Reps</label>
+                  <input
+                    type="number"
+                    placeholder="reps"
+                    onChange={(e) => {
+                      setReps(e.target.value);
+                    }}
+                  />
+                </fieldset>
+              );
+            })}
+            <button
+              className="bg-black text-white m-4"
+            >
+              Add workout data
+            </button>
+          </form> */}
+        </div>
+        {/* <AddWorkout routine={routine} exercises={exercises} user={user} /> */}
       </div>
     );
 }
