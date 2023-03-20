@@ -12,7 +12,7 @@ const Routine = ({setWeight, setReps, routine, exercises, user}) => {
     const [isEditing, setIsEditing] = useState(false);
     // const [date, setDate] = useState(new Date());
 
-    // delete entire routine, as of 12/3 this was found to cease working
+    // delete entire routine, the path is set up for the old data structure 
     const deleteRoutine = async () => {
         // alert('disabled for production')
         try {
@@ -66,8 +66,10 @@ const Routine = ({setWeight, setReps, routine, exercises, user}) => {
                 />
               </button>
             </div>
-            <h3 className="text-xl">Exercises:</h3>
             <ul className="flex flex-wrap border">
+              <li>
+                <h3 className="m-2 text-lg font-bold p-2">Exercises:</h3>
+              </li>
               {exercises.map((exercise) => {
                 return (
                   <li
