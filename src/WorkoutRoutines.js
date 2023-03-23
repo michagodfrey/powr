@@ -33,8 +33,8 @@ const WorkoutRoutines = ({ user }) => {
     // add something to default to view of create workout component if no routines exist
     
     return (
-      <div className="w-full">
-        <ul className="flex">
+      <div className="w-full min-h-[calc(100vh-192px)]">
+        <ul className="flex flex-wrap">
           {Object.entries(allRoutines).map(([routine], index) => {
             return (
               <li
@@ -47,13 +47,13 @@ const WorkoutRoutines = ({ user }) => {
             );
           })}
           <li
-            className="border py-3 min-w-[50px] text-center text-2xl cursor-pointer bg-secondary text-white font-bold"
+            className="border py-3 min-w-[60px] text-center text-2xl cursor-pointer bg-secondary text-white font-bold"
             onClick={() => updateTab(-1)}
           >
             +
           </li>
         </ul>
-        <ul className="flex">
+        <ul className="flex flex-wrap">
           {Object.entries(allRoutines).map(([routine, exercises], index) => {
             return (
               <li

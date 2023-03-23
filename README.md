@@ -7,3 +7,5 @@ POWR logo created by [Logo](https://logo.com/)
 Dumbell favicon from [Icons8](https://icons8.com/icon/BMybI8iktdPI/gym)
 
 Modal slide in animation by [Animista](http://animista.net)
+
+SVG icons from [SVG Repo](https://www.svgrepo.com/)

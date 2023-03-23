@@ -132,7 +132,7 @@ function App() {
   };
 
   return (
-    <div className="box-border text-textColor">
+    <div className="box-border text-textColor font-mono">
       <header className="bg-primary">
         {user ? (
           <div className="w-full p-4 flex items-center justify-between">

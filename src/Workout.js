@@ -1,8 +1,23 @@
 import React from 'react';
-// import {db} from "./firebase-config";
-// import {doc, deleteDoc} from "firebase/firestore";
 
-const Workout = ({workout, exercises, user}) => {
+const Workout = ({workout, exercises, prevWorkout}) => {
+
+    const getVolume = (exercise) => workout?.exerciseData[`${exercise} weight`] * workout?.exerciseData[`${exercise} reps`];
+
+    const getPrevVolume = (exercise) => prevWorkout?.exerciseData[`${exercise} weight`] * prevWorkout?.exerciseData[`${exercise} reps`];
+
+    const getVolumeDifference = exercise => {
+      const volume = getVolume(exercise);
+      const prevVolume = getPrevVolume(exercise);
+
+      if (prevVolume === undefined || volume > prevVolume) {
+        return 'lime';
+      } else if (volume < prevVolume) {
+        return "#FF3333";
+      } else {
+        return 'yellow';
+      }
+    };
 
     return (
       <tbody>
@@ -27,7 +42,7 @@ const Workout = ({workout, exercises, user}) => {
                   <td className="border">
                     {workout?.exerciseData[`${exercise} reps`]}
                   </td>
-                  <td className="border">
+                  <td className="border" style={{ backgroundColor: getVolumeDifference(exercise)}}>
                     {workout?.exerciseData[`${exercise} weight`] *
                       workout?.exerciseData[`${exercise} reps`]}
                   </td>

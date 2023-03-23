@@ -72,15 +72,18 @@ const Routine = ({routine, exercises, user}) => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold">{routine}</h2>
-      <ul>
+    <div className="p-4 border-t">
+      <h2 className="text-3xl font-bold">{routine}</h2>
+      <ul className="flex flex-wrap bg-white p-4 text-xl">
+        <li className="font-bold">Exercises:</li>
         {exercises.map((exercise, index) => (
-          <li key={index}>{exercise}</li>
+          <li key={index} className="mx-2">
+            {index === exercises.length - 1 && exercises.length > 1 ? `and ${exercise}.` : `${exercise},`}
+          </li>
         ))}
       </ul>
       <button
-        className="bg-primary hover:bg-primaryHover font-bold text-black p-4 my-2 ml-2 w-[280px]"
+        className="bg-secondary hover:bg-primaryHover font-bold text-white p-4 my-2 w-[280px]"
         type="button"
         onClick={handleToggleNewWorkoutForm}
       >

@@ -25,11 +25,11 @@ const RoutineRecords = ({user, routine, exercises}) => {
     }, [user, routine]);
 
     return (
-        <div className="h-[calc(100vh-30rem)] bg-white">
+        <div className="bg-white">
             This is the RoutineRecords Component
             <table className="flex">
-            {workouts.map((workout) => {
-                return <Workout key={workout.id} workout={workout} exercises={exercises} user={user} />;
+            {workouts.map((workout, index) => {
+                return <Workout key={workout.id} workout={workout} exercises={exercises} prevWorkout={index > 0 ? workouts[index - 1] : null} />;
             })}
             </table>
         </div>
