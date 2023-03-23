@@ -88,7 +88,7 @@ const CreateRoutineUser = ({ user }) => {
             type="button"
             onClick={handleAddExercise}
           >
-            Add Exercise
+            +
           </button>
         </div>
         {routineName.length < 1 ? (

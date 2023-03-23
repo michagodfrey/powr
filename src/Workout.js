@@ -2,15 +2,41 @@ import React from 'react';
 // import {db} from "./firebase-config";
 // import {doc, deleteDoc} from "firebase/firestore";
 
-// This component was supposed to display corresponding weight and reps data to exercises
-// in the routine, I did not get to a stage where there was data of that kind to render
-const Workout = ({workout, user}) => {
+const Workout = ({workout, exercises, user}) => {
+
     return (
-        <div className="border">
-            <p>Workout Component</p>
-            
-        </div>
-    )
+      <tbody>
+          {exercises.map((exercise, index) => {
+            return (
+              <React.Fragment key={index}>
+                {index === 0 && (
+                  <tr>
+                    <th className="border bg-secondary text-white">
+                      date: {workout.id}
+                    </th>
+                    <th className="border bg-secondary text-white">Weight</th>
+                    <th className="border bg-secondary text-white">Reps</th>
+                    <th className="border bg-secondary text-white">Volume</th>
+                  </tr>
+                )}
+                <tr>
+                  <td className="border">{exercise}</td>
+                  <td className="border">
+                    {workout?.exerciseData[`${exercise} weight`]}
+                  </td>
+                  <td className="border">
+                    {workout?.exerciseData[`${exercise} reps`]}
+                  </td>
+                  <td className="border">
+                    {workout?.exerciseData[`${exercise} weight`] *
+                      workout?.exerciseData[`${exercise} reps`]}
+                  </td>
+                </tr>
+              </React.Fragment>
+            ); 
+          })}
+      </tbody>
+    );
 }
 
 export default Workout
