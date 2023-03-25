@@ -1,37 +1,55 @@
 import React, { useState } from "react";
 import { setDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "./firebase-config";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 
 const NewWorkout = ({ user, routine, exercises }) => {
-    const [exerciseData, setExerciseData] = useState({});
+  const [exerciseData, setExerciseData] = useState({});
+  // const [date, setDate] = useState(new Date());
 
-    const handleExerciseChange = (event) => {
-        const { name, value } = event.target;
-        setExerciseData((prevData) => ({ ...prevData, [name]: parseInt(value) }));
-    };
+  const handleExerciseChange = (event) => {
+    const { name, value } = event.target;
+    setExerciseData((prevData) => ({ ...prevData, [name]: parseInt(value) }));
+  };
 
-    console.log(exerciseData)
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const timestamp = Timestamp.now();
+    const id = timestamp.toDate().getTime();
 
-        const timestamp = Timestamp.now();
-        const id = timestamp.toDate().getTime();
+    await setDoc(doc(db, "users", user.uid, routine, id.toString()), {
+      exerciseData,
+    });
 
-        await setDoc(
-            doc(db, "users", user.uid, routine, id.toString()),
-            {
-                exerciseData,
-            }
-        );
+    console.log("Document written with ID: ", id.toString());
 
-        console.log("Document written with ID: ", id.toString());
+    setExerciseData({});
+  };
 
-        setExerciseData({});
-    };
+  // <DatePicker
+  //   selected={date}
+  //   dateFormat="dd/MM/yyyy"
+  //   maxDate={new Date()}
+  //   closeOnScroll={true}
+  //   onChange={(date) => setDate(date)}
+  // />;
 
-    return (
-      <form onSubmit={handleSubmit}>
+  return (
+    <div>
+      <p className="mb-2">Enter data from your last workout.</p>
+      <ul className="pl-8">
+        <li className="-translate-x-8">Tips:</li>
+        <li className="list-disc">
+          Be consistent with unit of measurement for weight, e.g. stick with kg
+          or lb.
+        </li>
+        <li className="list-disc">
+          Enter total reps, e.g. if you did three sets of eight reps - 24reps.
+        </li>
+      </ul>
+      <form className="bg-gray p-4" onSubmit={handleSubmit}>
         <div className="flex flex-wrap">
           {exercises.map((exercise, index) => (
             <fieldset key={index} className="border bg-primary m-2 p-4">
@@ -68,7 +86,8 @@ const NewWorkout = ({ user, routine, exercises }) => {
           Save Workout
         </button>
       </form>
-    );
+    </div>
+  );
 };
 
 export default NewWorkout;

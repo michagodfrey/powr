@@ -12,14 +12,7 @@ import {doc, setDoc} from "firebase/firestore";
 import Modal from "./Modal";
 import PublicDisplay from "./PublicDisplay";
 import WorkoutRoutines from "./WorkoutRoutines";
-// import DisplayWorkouts from "./DisplayWorkouts";
-// import CreateWorkout from "./CreateWorkout";
 
-// this component contains the authorization and was planned to have 
-// all other components nested inside.
-// As of the last commit, this component was working
-// If you get problems rendering, chances are it has to do with the
-// user logged in and different data structures compared to active components
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -141,9 +134,13 @@ function App() {
               src={require("./images/powr-logo-noBG.webp")}
               alt="POWR logo"
             />
-            {/* <span className="text-black mx-4 text-lg sm:text-2xl">
+            <button className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1">
+              About
+            </button>
+            <dialog></dialog>
+            <span className="text-black mx-4 text-lg sm:text-2xl">
               {user.email}
-            </span> */}
+            </span>
             <button
               className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1"
               onClick={logout}
@@ -183,19 +180,13 @@ function App() {
       <main className="items-center flex flex-col bg-beige">
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         {user ? (
-          <>
-            {/* <DisplayWorkouts user={user} /> */}
-            {/* <CreateWorkout user={user} /> */}
-            <WorkoutRoutines user={user} />
-            {/* <CreateWorkout user={user} /> */}
-            {/* <DisplayWorkouts user={user} /> */}
-          </>
+          <WorkoutRoutines user={user} />
         ) : (
           <PublicDisplay />
         )}
       </main>
       <footer className="bg-primary text-black grid place-content-center h-24">
-        <a href="https://github.com/michagodfrey/powr" >
+        <a href="https://github.com/michagodfrey/powr">
           <svg
             className="hover:fill-white cursor-pointer"
             width="50px"

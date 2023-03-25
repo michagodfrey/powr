@@ -39,7 +39,7 @@ const WorkoutRoutines = ({ user }) => {
             return (
               <li
                 key={routine.toString()}
-                className="border p-4 cursor-pointer"
+                className={`border p-4 cursor-pointer ${tab === index && "bg-warning"}`}
                 onClick={() => updateTab(index)}
               >
                 {routine}

@@ -52,11 +52,15 @@ const CreateRoutineUser = ({ user }) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-2 font-mono">Create a new routine</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="routineName" className="text-[0px]">
-            Routine:
+      <h2 className="text-2xl font-bold">Create a new routine</h2>
+      <p className="mb-2">
+        Give your workout routine a name and list the exercises that you will
+        train to progressive overload.
+      </p>
+      <form className="bg-gray p-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col">
+          <label htmlFor="routineName" className="text-lg font-bold">
+            Workout Routine:
           </label>
           <input
             className="p-4 mb-8 w-full max-w-[600px]"
@@ -68,10 +72,13 @@ const CreateRoutineUser = ({ user }) => {
           />
         </div>
         <hr></hr>
+        <p className="text-lg font-bold">Workout Exercises:</p>
         <div className="flex flex-wrap">
           {exercises.map((exercise, index) => (
             <div key={index} className="w-[300px] flex items-center">
-              <label className="text-[0px]" htmlFor={`exercise${index}`}>Exercise {index + 1}:</label>
+              <label className="text-[0px]" htmlFor={`exercise${index}`}>
+                Exercise {index + 1}:
+              </label>
               <input
                 className="new-exercise p-4 my-2"
                 placeholder={`Exercise ${index + 1}`}
@@ -80,13 +87,26 @@ const CreateRoutineUser = ({ user }) => {
                 value={exercise}
                 onChange={(event) => handleExerciseChange(index, event)}
               />
-              {index > 0 && (
+              {index > 0 ? (
                 <button
-                  className="bg-warning hover:bg-yellow text-white font-bold ml-2"
+                  className="bg-warning hover:bg-yellow text-white w-[56px] h-[56px] flex justify-center items-center"
                   type="button"
                   onClick={() => handleDeleteExercise(index)}
                 >
-                  <img src="images/trash-2-svgrepo-com.svg" alt="delete exercise input icon" />
+                  <img
+                    src="images/trash-2-svgrepo-com.svg"
+                    alt="delete exercise input icon"
+                  />
+                </button>
+              ) : (
+                <button
+                  className="opacity-25 bg-warning hover:bg-yellow text-white w-[56px] h-[56px] flex justify-center items-center"
+                  disabled
+                >
+                  <img
+                    src="images/trash-2-svgrepo-com.svg"
+                    alt="delete exercise input icon"
+                  />
                 </button>
               )}
             </div>
@@ -99,6 +119,7 @@ const CreateRoutineUser = ({ user }) => {
             Add exercise
           </button>
         </div>
+        <hr></hr>
         {routineName.length < 1 ? (
           <button
             className="opacity-25 bg-secondary font-bold text-white p-4 my-4 w-[300px]"

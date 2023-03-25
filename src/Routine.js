@@ -1,58 +1,55 @@
 import React, {useState} from "react";
-// import {db} from "./firebase-config";
-// import {doc, updateDoc, deleteField} from "firebase/firestore";
+import {db} from "./firebase-config";
+import {doc, getDoc, updateDoc, deleteField, arrayRemove, arrayUnion} from "firebase/firestore";
 import NewWorkout from "./NewWorkout";
 import RoutineRecords from "./RoutineRecords";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import uuid from "react-uuid";
 
 const Routine = ({routine, exercises, user}) => {
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [newRoutineName, setNewRoutineName] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [newRoutineName, setNewRoutineName] = useState("");
   const [showNewWorkoutForm, setShowNewWorkoutForm] = useState(false);
-  // const [date, setDate] = useState(new Date());
 
-  // CREATE DELETE ROUTINE FUNCTION
-  // const deleteRoutine = async (routine) => {
-  // alert('disabled for production')
-  // old delete whole doc code
-  // try {
-  //   await deleteDoc(doc(db, "users", `${user.uid}`));
-  //   console.log("deleted routine");
-  // } catch (error) {
-  //   console.log(error.message);
-  // }
+  // this will only delete the routine array from the user doc, 
+  // any saved workouts will remain but won't be displayed
+  const deleteRoutine = async (routine) => {
+      const ref = doc(db, "users", `${user.uid}`);
+      try {
+        await updateDoc(ref, {
+          [`routines.${routine}`]: deleteField(),
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+      window.location.reload();
+  };
 
-  // this function can't tartget the nested values of routines map in user doc
-  //   const ref = doc(db, "users", `${user.uid}`);
-  //   try {
-  //     await updateDoc(ref, {
-  //       routines: {
-  //         [routine]: deleteField(),
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  //   window.location.reload();
-  // };
+  const updateRoutine = async (routineName) => {
+    const ref = doc(db, "users", `${user.uid}`);
+    try {
+      const docSnap = await getDoc(ref);
+      const routines = docSnap.data().routines;
+      const routineToUpdate = routines[routineName];
+      console.log(routines)
 
-  // CREATE UPDATE ROUTINE NAME FUNCTION
-  // this wipes all routines and replaces it with the new name
-  // const updateRoutine = async (routine) => {
-  //   const docRef = doc(db, "users", `${user.uid}`);
-  //   try {
-  //     await updateDoc(docRef, {
-  //       routines: {
-  //         [routine]: newRoutineName,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  //   window.location.reload();
-  // };
+      // if (routineToUpdate) {
+      //   const updatedRoutine = {...routineToUpdate, name: newRoutineName};
+
+      // const updatedRoutine = { ...routineToUpdate}
+
+        // await updateDoc(ref, {
+        //   routineToUpdate: newRoutineName,
+        // });
+
+      //   await updateDoc(ref, {
+      //     routines: arrayRemove(routineToUpdate),
+      //   });
+        
+      // }
+    } catch (error) {
+      console.log(error.message);
+    }
+    // window.location.reload();
+  };
 
   // FUNCTION TO EDIT NAMES OF EXERCISES
   // this deletes entire array of exercises, want it to delete single elements in the array
@@ -73,37 +70,94 @@ const Routine = ({routine, exercises, user}) => {
 
   return (
     <div className="p-4 border-t">
-      <h2 className="text-3xl font-bold">{routine}</h2>
-      <ul className="flex flex-wrap bg-white p-4 text-xl">
-        <li className="font-bold">Exercises:</li>
-        {exercises.map((exercise, index) => (
-          <li key={index} className="mx-2">
-            {index === exercises.length - 1 && exercises.length > 1 ? `and ${exercise}.` : `${exercise},`}
-          </li>
-        ))}
-      </ul>
-      <button
-        className="bg-secondary hover:bg-primaryHover font-bold text-white p-4 my-2 w-[280px]"
-        type="button"
-        onClick={handleToggleNewWorkoutForm}
-      >
-        Add New Workout
-      </button>
-      {showNewWorkoutForm && (
-        <NewWorkout user={user} routine={routine} exercises={exercises} />
+      {isEditing ? (
+        <>
+          <div className="flex justify-between m-2 items-center">
+            <span>Caution: delete routine and edit name</span>
+            <input
+            type="text"
+            placeholder={routine}
+            className="text-2xl font-bold"
+            onChange={(event) => {
+              setNewRoutineName(event.target.value);
+            }}
+            />
+            <button
+              className="bg-yellow m-4"
+              onClick={() => updateRoutine(routine)}
+            >
+              Change Name
+            </button>
+            <button
+              className="bg-warning m-4"
+              onClick={() => deleteRoutine(routine)}
+            >
+              Delete Routine
+            </button>
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="flex items-center"
+            >
+              <img
+                className="h-[25px] lg:h-[35px] mr-2 transition ease-in-out hover:scale-110"
+                src={"images/cancel-svgrepo-com.svg"}
+                alt="cancel icon"
+              />
+              End editing
+            </button>
+          </div>
+          <ul className="flex flex-wrap bg-primary p-4 text-xl">
+            <li className="font-bold">Exercises:</li>
+            {exercises.map((exercise, index) => (
+              <li key={index} className="mx-2">
+                {index === exercises.length - 1 && exercises.length > 1
+                  ? `and ${exercise}.`
+                  : `${exercise},`}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          <div className="flex justify-between m-2 items-center">
+            <h2 className="text-3xl font-bold">{routine}</h2>
+            <button onClick={() => setIsEditing(!isEditing)}>
+              <img
+                className="h-[25px] lg:h-[35px] transition ease-in-out hover:scale-110"
+                src={"images/settings-gear-part-2-svgrepo-com.svg"}
+                alt="gear icon"
+              />
+            </button>
+          </div>
+
+          <ul className="flex flex-wrap bg-white p-4 text-xl">
+            <li className="font-bold">Exercises:</li>
+            {exercises.map((exercise, index) => (
+              <li key={index} className="mx-2">
+                {index === exercises.length - 1 && exercises.length > 1
+                  ? `and ${exercise}.`
+                  : `${exercise},`}
+              </li>
+            ))}
+          </ul>
+          <button
+            className="bg-secondary hover:bg-primaryHover font-bold text-white p-4 my-2 w-[280px]"
+            type="button"
+            onClick={handleToggleNewWorkoutForm}
+          >
+            Add New Workout
+          </button>
+          {showNewWorkoutForm && (
+            <NewWorkout user={user} routine={routine} exercises={exercises} />
+          )}
+          <RoutineRecords user={user} routine={routine} exercises={exercises} />
+        </>
       )}
-      <RoutineRecords user={user} routine={routine} exercises={exercises} />
     </div>
   );
 
 
-  // <DatePicker
-  //   selected={date}
-  //   dateFormat="dd/MM/yyyy"
-  //   maxDate={new Date()}
-  //   closeOnScroll={true}
-  //   onChange={(date) => setDate(date)}
-  // />;
+
 
   // return (
   //   <div className="border p-4">
