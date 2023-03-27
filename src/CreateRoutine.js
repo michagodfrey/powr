@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
 
-const CreateRoutineUser = ({ user }) => {
+const CreateRoutineUser = ({ user, allRoutines }) => {
   const [routineName, setRoutineName] = useState("");
   const [exercises, setExercises] = useState([""]);
   
@@ -29,16 +29,13 @@ const CreateRoutineUser = ({ user }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exerciseInputs = document.querySelectorAll(".new-exercise");
-
-    for (let i = 0; i < exerciseInputs.length; i++) {
-      if (exerciseInputs[i].value === "") {
-        alert("Please remove empty inputs");
-        return;
-      }
+    if (Object.keys(allRoutines).includes(routineName)) {
+      alert("A routine with that name already exists");
+      return;
     }
 
     const docRef = doc(db, "users", user.uid);
+
     const data = {
       routines: {
         [routineName]: exercises,
@@ -69,6 +66,7 @@ const CreateRoutineUser = ({ user }) => {
             id="routineName"
             value={routineName}
             onChange={handleNameChange}
+            required
           />
         </div>
         <hr></hr>
@@ -86,6 +84,7 @@ const CreateRoutineUser = ({ user }) => {
                 id={`exercise${index}`}
                 value={exercise}
                 onChange={(event) => handleExerciseChange(index, event)}
+                required
               />
               {index > 0 ? (
                 <button
@@ -100,7 +99,7 @@ const CreateRoutineUser = ({ user }) => {
                 </button>
               ) : (
                 <button
-                  className="opacity-25 bg-warning hover:bg-yellow text-white w-[56px] h-[56px] flex justify-center items-center"
+                  className="opacity-25 bg-warning text-white w-[56px] h-[56px] flex justify-center items-center"
                   disabled
                 >
                   <img
@@ -120,22 +119,12 @@ const CreateRoutineUser = ({ user }) => {
           </button>
         </div>
         <hr></hr>
-        {routineName.length < 1 ? (
-          <button
-            className="opacity-25 bg-secondary font-bold text-white p-4 my-4 w-[300px]"
-            type="submit"
-            disabled
-          >
-            Save Routine
-          </button>
-        ) : (
-          <button
-            className="bg-secondary font-bold text-white p-4 my-4 w-[300px]"
-            type="submit"
-          >
-            Save Routine
-          </button>
-        )}
+        <button
+          className="bg-secondary font-bold text-white p-4 my-4 w-[300px]"
+          type="submit"
+        >
+          Save Routine
+        </button>
       </form>
     </div>
   );

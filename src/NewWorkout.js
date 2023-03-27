@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { setDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "./firebase-config";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const NewWorkout = ({ user, routine, exercises }) => {
   const [exerciseData, setExerciseData] = useState({});
-  // const [date, setDate] = useState(new Date());
+  const [showDate, setShowDate] = useState(false);
+  const [date, setDate] = useState(new Date());
+
+  const handleShowDate = () => setShowDate(!showDate);
 
   const handleExerciseChange = (event) => {
     const { name, value } = event.target;
@@ -16,25 +19,15 @@ const NewWorkout = ({ user, routine, exercises }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const timestamp = Timestamp.now();
-    const id = timestamp.toDate().getTime();
-
+    const id = showDate ? date.getTime() : Timestamp.now().toDate().getTime();
+    
     await setDoc(doc(db, "users", user.uid, routine, id.toString()), {
       exerciseData,
     });
 
-    console.log("Document written with ID: ", id.toString());
-
     setExerciseData({});
+    window.location.reload();
   };
-
-  // <DatePicker
-  //   selected={date}
-  //   dateFormat="dd/MM/yyyy"
-  //   maxDate={new Date()}
-  //   closeOnScroll={true}
-  //   onChange={(date) => setDate(date)}
-  // />;
 
   return (
     <div>
@@ -50,6 +43,26 @@ const NewWorkout = ({ user, routine, exercises }) => {
         </li>
       </ul>
       <form className="bg-gray p-4" onSubmit={handleSubmit}>
+        <label>Use previous date?</label>
+        <input type="checkbox" onChange={handleShowDate} />
+        {showDate ? (
+          <DatePicker
+            selected={date}
+            dateFormat="dd/MM/yyyy"
+            maxDate={new Date()}
+            closeOnScroll={true}
+            onChange={(date) => setDate(date)}
+          />
+        ) : (
+          <DatePicker
+            selected={date}
+            dateFormat="dd/MM/yyyy"
+            maxDate={new Date()}
+            closeOnScroll={true}
+            onChange={(date) => setDate(date)}
+            disabled
+          />
+        )}
         <div className="flex flex-wrap">
           {exercises.map((exercise, index) => (
             <fieldset key={index} className="border bg-primary m-2 p-4">
@@ -58,23 +71,25 @@ const NewWorkout = ({ user, routine, exercises }) => {
                 Weight:
               </label>
               <input
-                className="p-4"
+                className="newWorkoutInput p-4"
                 type="number"
                 name={`${exercise} weight`}
                 placeholder="Weight"
                 value={exerciseData[`${exercise} weight`] || ""}
                 onChange={handleExerciseChange}
+                required
               />
               <label htmlFor={`${exercise} reps`} className="text-[0px]">
                 Reps:
               </label>
               <input
-                className="p-4 ml-2 my-2"
+                className="newWorkoutInput p-4 ml-2 my-2"
                 type="number"
                 name={`${exercise} reps`}
                 placeholder="Total reps"
                 value={exerciseData[`${exercise} reps`] || ""}
                 onChange={handleExerciseChange}
+                required
               />
             </fieldset>
           ))}

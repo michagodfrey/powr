@@ -20,6 +20,7 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   // display modal functions
   const openModal = () => {
@@ -36,6 +37,11 @@ function App() {
       setUser(currentUser);
     });
   }, []);
+
+  // display user menu
+  const handleMenuClick = () => {
+    setShowMenu(!showMenu);
+  }
 
   // auth functions
   const register = async () => {
@@ -79,6 +85,7 @@ function App() {
           email: registerEmail,
           name: registerName,
           image: registerImage,
+          routines: {}
         });
 
         closeModal();
@@ -134,19 +141,52 @@ function App() {
               src={require("./images/powr-logo-noBG.webp")}
               alt="POWR logo"
             />
-            <button className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1">
-              About
-            </button>
-            <dialog></dialog>
-            <span className="text-black mx-4 text-lg sm:text-2xl">
-              {user.email}
-            </span>
             <button
-              className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1"
-              onClick={logout}
+              className="sm:hidden"
+              type="button"
+              aira-expanded="true"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
             >
-              Sign out
+              <svg
+                fill="#000000"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>Account Settings</title>
+                <path d="M9.6,3.32a3.86,3.86,0,1,0,3.86,3.85A3.85,3.85,0,0,0,9.6,3.32M16.35,11a.26.26,0,0,0-.25.21l-.18,1.27a4.63,4.63,0,0,0-.82.45l-1.2-.48a.3.3,0,0,0-.3.13l-1,1.66a.24.24,0,0,0,.06.31l1,.79a3.94,3.94,0,0,0,0,1l-1,.79a.23.23,0,0,0-.06.3l1,1.67c.06.13.19.13.3.13l1.2-.49a3.85,3.85,0,0,0,.82.46l.18,1.27a.24.24,0,0,0,.25.2h1.93a.24.24,0,0,0,.23-.2l.18-1.27a5,5,0,0,0,.81-.46l1.19.49c.12,0,.25,0,.32-.13l1-1.67a.23.23,0,0,0-.06-.3l-1-.79a4,4,0,0,0,0-.49,2.67,2.67,0,0,0,0-.48l1-.79a.25.25,0,0,0,.06-.31l-1-1.66c-.06-.13-.19-.13-.31-.13L19.5,13a4.07,4.07,0,0,0-.82-.45l-.18-1.27a.23.23,0,0,0-.22-.21H16.46M9.71,13C5.45,13,2,14.7,2,16.83v1.92h9.33a6.65,6.65,0,0,1,0-5.69A13.56,13.56,0,0,0,9.71,13m7.6,1.43a1.45,1.45,0,1,1,0,2.89,1.45,1.45,0,0,1,0-2.89Z" />
+              </svg>
             </button>
+            {showMenu && (
+              <div
+                className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex="-1"
+              >
+                <div className="py-1" role="none">
+                  <button
+                    onClick={logout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    role="menuitem"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            )}
+            <div className="bg-white hidden sm:flex flex-col">
+              <span className="text-xs p-1">{user.email}</span>
+              <button
+                className="text-secondary bg-white font-bold border"
+                onClick={logout}
+              >
+                Sign out
+              </button>
+            </div>
           </div>
         ) : (
           <div className="bg-secondary w-full p-4 flex items-center justify-between">
@@ -156,7 +196,7 @@ function App() {
               alt="POWR logo"
             />
             <button
-              className="h-12 sm:h-16 w-32 sm:w-40 text-lg sm:text-2xl text-secondary bg-white font-bold p-2 sm:p-1"
+              className="h-12 sm:h-16 px-2 text-secondary bg-white font-bold"
               onClick={openModal}
             >
               Login/Signup
@@ -179,11 +219,7 @@ function App() {
       </header>
       <main className="items-center flex flex-col bg-beige">
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
-        {user ? (
-          <WorkoutRoutines user={user} />
-        ) : (
-          <PublicDisplay />
-        )}
+        {user ? <WorkoutRoutines user={user} /> : <PublicDisplay />}
       </main>
       <footer className="bg-primary text-black grid place-content-center h-24">
         <a href="https://github.com/michagodfrey/powr">

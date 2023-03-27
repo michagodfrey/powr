@@ -14,19 +14,26 @@ const WorkoutRoutines = ({ user }) => {
       setTab(index);
     }
 
-    useEffect(() => {
-        const getRoutines = async () => {
-            const docRef = doc(db, "users", `${user.uid}`);
-            try {
-                const docSnap = await getDoc(docRef);
-                // console.log(docSnap.data());
-                setAllRoutines(docSnap.data().routines);
-            } catch (error) {
-                console.log(error.message);
-            }
-        }
-        getRoutines();
-    }, [user]);
+    // this is crashing app.
+    // useEffect(() => {
+    //     const getRoutines = async () => {
+    //         try {
+    //             const docRef = doc(db, "users", `${user.uid}`);
+    //             const routinesExist = await getDoc(docRef).then((doc) => doc.exists())
+                
+    //             if (!routinesExist) {
+    //               console.log("No routines found");
+    //               return;
+    //             }
+    //             const docSnap = await getDoc(docRef);
+    //             // console.log(docSnap.data());
+    //             setAllRoutines(docSnap.data().routines);
+    //         } catch (error) {
+    //             console.log(error.message);
+    //         }
+    //     }
+    //     getRoutines();
+    // }, [user]);
 
     // add loading function
 
@@ -65,7 +72,7 @@ const WorkoutRoutines = ({ user }) => {
             );
           })}
           <li className={tab === -1 ? "w-full" : "hidden"}>
-            <CreatRoutine user={user} />
+            <CreatRoutine user={user} allRoutines={allRoutines} />
           </li>
         </ul>
       </div>
