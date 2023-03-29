@@ -1,44 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
+import { FaPlusSquare } from "react-icons/fa";
 import Routine from "./Routine";
 import CreatRoutine from "./CreateRoutine";
 
-// This component displays the routines created by the user
 const WorkoutRoutines = ({ user }) => {
     const [allRoutines, setAllRoutines] = useState([]);
     const [tab, setTab] = useState(0);
 
-    // consider how to display create new routine when the user is new
     const updateTab = (index) => {
       setTab(index);
     }
 
-    // this is crashing app.
-    // useEffect(() => {
-    //     const getRoutines = async () => {
-    //         try {
-    //             const docRef = doc(db, "users", `${user.uid}`);
-    //             const routinesExist = await getDoc(docRef).then((doc) => doc.exists())
+    useEffect(() => {
+        const getRoutines = async () => {
+            try {
+                const docRef = doc(db, "users", `${user.uid}`);
                 
-    //             if (!routinesExist) {
-    //               console.log("No routines found");
-    //               return;
-    //             }
-    //             const docSnap = await getDoc(docRef);
-    //             // console.log(docSnap.data());
-    //             setAllRoutines(docSnap.data().routines);
-    //         } catch (error) {
-    //             console.log(error.message);
-    //         }
-    //     }
-    //     getRoutines();
-    // }, [user]);
+                const docSnap = await getDoc(docRef);
+                // console.log(docSnap.data());
+                if (docSnap.data().routines) {
+                }
+                setAllRoutines(docSnap.data().routines);
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        getRoutines();
+    }, [user]);
 
-    // add loading function
-
-    // add something to default to view of create workout component if no routines exist
-    
     return (
       <div className="w-full min-h-[calc(100vh-192px)]">
         <ul className="flex flex-wrap">
@@ -46,7 +37,9 @@ const WorkoutRoutines = ({ user }) => {
             return (
               <li
                 key={routine.toString()}
-                className={`border p-4 cursor-pointer ${tab === index && "bg-warning"}`}
+                className={`p-4 cursor-pointer font-bold text-lg border-x bg-secondary text-white ${
+                  tab === index && "bg-white text-[#191970]"
+                }`}
                 onClick={() => updateTab(index)}
               >
                 {routine}
@@ -54,10 +47,10 @@ const WorkoutRoutines = ({ user }) => {
             );
           })}
           <li
-            className="border py-3 min-w-[60px] text-center text-2xl cursor-pointer bg-secondary text-white font-bold"
+            className="w-16 min-h-[60px] text-4xl grid items-center cursor-pointer bg-primary hover:bg-primaryHover transition-colors text-black"
             onClick={() => updateTab(-1)}
           >
-            +
+            <FaPlusSquare className="m-auto" />
           </li>
         </ul>
         <ul className="flex flex-wrap">
@@ -71,7 +64,13 @@ const WorkoutRoutines = ({ user }) => {
               </li>
             );
           })}
-          <li className={tab === -1 ? "w-full" : "hidden"}>
+          <li
+            className={
+              tab === -1 || Object.entries(allRoutines).length === 0
+                ? "w-full"
+                : "hidden"
+            }
+          >
             <CreatRoutine user={user} allRoutines={allRoutines} />
           </li>
         </ul>

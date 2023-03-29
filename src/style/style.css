@@ -134,17 +134,21 @@
   border: 1px solid #001f3f;
 }
 .modal-tab button {
-  height: 50px;
+  min-height: 50px;
   width: 90%;
   max-width: 450px;
   margin: 0.25rem auto 0.5rem;
   cursor: pointer;
   font-weight: bold;
   color: white;
-  font-size: 1.25rem;
 }
 .modal-tab .sign-log-btn {
-  background-color: #E46B1B;
+  background-color: #e8772e;
+  font-size: 1.25rem;
+  color: black;
+}
+.modal-tab .sign-log-btn:hover {
+  background-color: #f4bb97;
 }
 .modal-tab p {
   font-weight: bold;
@@ -158,7 +162,7 @@
   display: none;
 }
 .modal-tab .label-radio {
-  background-color: gray;
+  background-color: #001f3f;
   color: white;
   width: 100px;
   height: 50px;
@@ -171,7 +175,8 @@
   background-color: #f4bb97;
 }
 .modal-tab input[id^=tab]:checked + label {
-  background-color: #e8772e;
+  background-color: white;
+  color: #001f3f;
 }
 .modal-tab .modal-content {
   background-color: white;
@@ -190,7 +195,6 @@
   background-color: white;
   color: #001f3f;
   margin: 1rem auto 0;
-  width: 200px;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -242,13 +246,4 @@
 #pw-reset:checked ~ .modal-pw-reset {
   display: flex;
   align-items: center;
-}
-
-/**
- * ----------------------------------------
- * custom styles for table
- * ----------------------------------------
- */
-.input-red {
-  background-color: red;
 }

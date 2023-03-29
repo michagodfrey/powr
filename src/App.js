@@ -11,11 +11,12 @@ import {db, auth, googleProvider, facebookProvider} from "./firebase-config";
 import {doc, setDoc} from "firebase/firestore";
 import Modal from "./Modal";
 import PublicDisplay from "./PublicDisplay";
-import WorkoutRoutines from "./WorkoutRoutines";
+import UserDisplay from "./UserDisplay";
 
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({});
@@ -46,6 +47,9 @@ function App() {
   // auth functions
   const register = async () => {
     try {
+      if (registerPassword !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
       await createUserWithEmailAndPassword(
         auth,
         registerEmail,
@@ -55,6 +59,7 @@ function App() {
           const ref = doc(db, "users", res.user.uid);
           await setDoc(ref, {
             email: registerEmail,
+            routines: {}
           });
         })
         .catch((error) => {
@@ -133,11 +138,11 @@ function App() {
 
   return (
     <div className="box-border text-textColor font-mono">
-      <header className="bg-primary">
+      <header className="bg-secondary">
         {user ? (
           <div className="w-full p-4 flex items-center justify-between">
             <img
-              className="max-h-12 sm:max-h-16"
+              className="max-h-16"
               src={require("./images/powr-logo-noBG.webp")}
               alt="POWR logo"
             />
@@ -149,7 +154,7 @@ function App() {
               onClick={handleMenuClick}
             >
               <svg
-                fill="#000000"
+                fill="#ffffff"
                 width="50px"
                 height="50px"
                 viewBox="0 0 24 24"
@@ -161,16 +166,19 @@ function App() {
             </button>
             {showMenu && (
               <div
-                className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                className="sm:hidden origin-top-right absolute right-0 top-[60px] mt-2 w-56 bg-white ring-1 ring-black ring-opacity-5 p-4"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
                 tabIndex="-1"
               >
                 <div className="py-1" role="none">
+                  <p>
+                    Signed in as <span className="underline">{user.email}</span>
+                  </p>
                   <button
                     onClick={logout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    className="block w-full bg-secondary text-white text-center mt-2 px-4 py-2"
                     role="menuitem"
                   >
                     Sign Out
@@ -179,33 +187,34 @@ function App() {
               </div>
             )}
             <div className="bg-white hidden sm:flex flex-col">
-              <span className="text-xs p-1">{user.email}</span>
               <button
-                className="text-secondary bg-white font-bold border"
+                className="text-white bg-secondary font-bold border px-4 py-2"
                 onClick={logout}
               >
                 Sign out
               </button>
+              <span className="px-4">{user.email}</span>
             </div>
           </div>
         ) : (
-          <div className="bg-secondary w-full p-4 flex items-center justify-between">
+          <div className="w-full p-4 flex items-center justify-between">
             <img
-              className="max-h-12 sm:max-h-16"
+              className="max-h-16"
               src={require("./images/powr-logo-noBG.webp")}
               alt="POWR logo"
             />
             <button
-              className="h-12 sm:h-16 px-2 text-secondary bg-white font-bold"
+              className="h-16 px-6 text-3xl text-white bg-primary hover:bg-primaryHover font-bold border-4"
               onClick={openModal}
             >
-              Login/Signup
+              LOGIN
             </button>
             <Modal
               isModalOpen={isModalOpen}
               closeModal={closeModal}
               setRegisterEmail={setRegisterEmail}
               setRegisterPassword={setRegisterPassword}
+              setConfirmPassword={setConfirmPassword}
               register={register}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
@@ -217,18 +226,19 @@ function App() {
           </div>
         )}
       </header>
-      <main className="items-center flex flex-col bg-beige">
+      <main className="items-center flex flex-col bg-white">
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
-        {user ? <WorkoutRoutines user={user} /> : <PublicDisplay />}
+        {user ? <UserDisplay user={user} /> : <PublicDisplay />}
       </main>
-      <footer className="bg-primary text-black grid place-content-center h-24">
+      <footer className="bg-secondary grid place-content-center h-24">
         <a href="https://github.com/michagodfrey/powr">
           <svg
-            className="hover:fill-white cursor-pointer"
+            className="transition-colors hover:fill-primary cursor-pointer"
             width="50px"
             height="50px"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
+            fill="#ffffff"
           >
             <title>github</title>
             <rect width="24" height="24" fill="none" />

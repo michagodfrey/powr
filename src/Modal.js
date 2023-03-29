@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {FaFacebookF, FaGoogle, FaTimes} from "react-icons/fa";
 
-// Modal used for login/sign up, working as of last commit
 const Modal = ({
   isModalOpen,
   closeModal,
   setRegisterEmail,
   setRegisterPassword,
+  setConfirmPassword,
   register,
   setLoginEmail,
   setLoginPassword,
@@ -113,11 +113,19 @@ const Modal = ({
             <input
               type="password"
               placeholder="password"
+              autoComplete="new-password"
               onChange={(event) => {
                 setRegisterPassword(event.target.value);
               }}
             />
-            <input type="password" placeholder="confirm password" />
+            <input
+              type="password"
+              placeholder="confirm password"
+              autoComplete="new-password"
+              onChange={(event) => {
+                setConfirmPassword(event.target.value);
+              }}
+            />
             <button className="sign-log-btn" onClick={register}>
               Sign up
             </button>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {db} from "./firebase-config";
-import {collection, getDoc, getDocs} from "firebase/firestore";
+import {collection, getDocs} from "firebase/firestore";
 import Workout from "./Workout";
 
 const RoutineRecords = ({user, routine, exercises}) => {
@@ -11,18 +11,10 @@ const RoutineRecords = ({user, routine, exercises}) => {
       setVolDisplay(!volDisplay);
     };
 
-
-
     useEffect(() => {
         const getWorkouts = async () => {
             try {
                 const routineRef = collection(db, "users", `${user.uid}`, routine);
-                const routineExists = await getDoc(routineRef).then((doc) => doc.exists());
-
-                if(!routineExists) {
-                  console.log("Routine not found");
-                  return;
-                }
 
                 const snapshot = await getDocs(routineRef);
                 let tempArr = [];
@@ -56,8 +48,10 @@ const RoutineRecords = ({user, routine, exercises}) => {
       <div className="bg-white p-4">
         {workouts.length > 0 ? (
           <>
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl">Workout records for {routine}</h3>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+              <h3 className="text-2xl">
+                Workout records for <b>{routine}</b>
+              </h3>
               <div className="flex items-center">
                 <span className="mr-4 text-lg">Volume Only Display</span>
                 <div
@@ -74,6 +68,12 @@ const RoutineRecords = ({user, routine, exercises}) => {
                 </div>
               </div>
             </div>
+            <p className="mb-2">
+              Workout data by date. A{" "}
+              <span className="border bg-[lime]">green cell</span> means you
+              achieved progressive overload! That is, increased volume (weight x reps)
+              compared to the previous workout.
+            </p>
             <div className="flex justify-start">
               <div>
                 <ExerciseColumn exercises={exercises} volDisplay={volDisplay} />
@@ -94,7 +94,9 @@ const RoutineRecords = ({user, routine, exercises}) => {
             </div>
           </>
         ) : (
-          <p>No workout records for {routine} yet!</p>
+          <p>
+            No workout records for <b>{routine}</b> yet!
+          </p>
         )}
       </div>
     );

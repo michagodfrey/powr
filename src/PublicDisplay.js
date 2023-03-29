@@ -1,7 +1,7 @@
 import React from "react";
 
-// The front page of the app the user sees before logging in
 const PublicDisplay = () => {
+  
   return (
     <div className="text-center w-full">
       <div className="bg-primary pb-4">
@@ -10,16 +10,18 @@ const PublicDisplay = () => {
           src={require("./images/powr-logo-noBG.webp")}
           alt="POWR logo"
         />
-        <p className="text-lg md:text-2xl text-secondary font-bold px-2 pb-2 md:pb-4">
-          The workout recording app that helps users achieve progressive
-          overload
-        </p>
       </div>
-      <img
-        className="w-full max-w-lg h-auto my-4 m-auto"
-        src={require("./images/placeholder.png")}
-        alt="Placeholder img"
-      />
+      <p className="text-lg md:text-2xl text-secondary font-bold m-4">
+        The workout recording app that helps users achieve progressive overload
+      </p>
+      <div className="p-4 border max-w-5xl m-auto shadow-md">
+        <img
+          
+          src={require("./images/POWR-short-table.webp")}
+          alt="Sceenshot of homepage"
+        />
+      </div>
+
       <h2 className="underline mt-8 mb-4 text-2xl">How does it work?</h2>
       <div className="m-auto text-lg text-justify px-4 max-w-5xl">
         Create an acount to keep a record of your workouts. Track the reps and

@@ -31,7 +31,7 @@ const NewWorkout = ({ user, routine, exercises }) => {
 
   return (
     <div>
-      <p className="mb-2">Enter data from your last workout.</p>
+      <p className="mb-2 underline">Enter data from your last workout.</p>
       <ul className="pl-8">
         <li className="-translate-x-8">Tips:</li>
         <li className="list-disc">
@@ -39,39 +39,56 @@ const NewWorkout = ({ user, routine, exercises }) => {
           or lb.
         </li>
         <li className="list-disc">
-          Enter total reps, e.g. if you did three sets of eight reps - 24reps.
+          Enter total reps of all sets, e.g. three sets of eight reps = 24reps.
         </li>
       </ul>
-      <form className="bg-gray p-4" onSubmit={handleSubmit}>
-        <label>Use previous date?</label>
-        <input type="checkbox" onChange={handleShowDate} />
-        {showDate ? (
-          <DatePicker
-            selected={date}
-            dateFormat="dd/MM/yyyy"
-            maxDate={new Date()}
-            closeOnScroll={true}
-            onChange={(date) => setDate(date)}
-          />
-        ) : (
-          <DatePicker
-            selected={date}
-            dateFormat="dd/MM/yyyy"
-            maxDate={new Date()}
-            closeOnScroll={true}
-            onChange={(date) => setDate(date)}
-            disabled
-          />
-        )}
+      <hr className="my-4"></hr>
+      <form className="border-4 p-4 shadow-md" onSubmit={handleSubmit}>
+        <div className="flex flex-wrap items-center p-2 text-black">
+          <p className="mr-2 text-2xl">
+            <b>{routine}</b> workout on:
+          </p>
+          <div className="mr-2 font-bold text-xl ">
+            {showDate ? (
+              <DatePicker
+                className="bg-primaryHover"
+                selected={date}
+                dateFormat="dd/MM/yyyy"
+                maxDate={new Date()}
+                closeOnScroll={true}
+                onChange={(date) => setDate(date)}
+              />
+            ) : (
+              <DatePicker
+                selected={date}
+                dateFormat="dd/MM/yyyy"
+                maxDate={new Date()}
+                closeOnScroll={true}
+                onChange={(date) => setDate(date)}
+                disabled
+              />
+            )}
+          </div>
+          <div className="flex items-center">
+            <label>
+              <input
+                className="mr-2"
+                type="checkbox"
+                onChange={handleShowDate}
+              />
+              Use previous date?
+            </label>
+          </div>
+        </div>
         <div className="flex flex-wrap">
           {exercises.map((exercise, index) => (
-            <fieldset key={index} className="border bg-primary m-2 p-4">
+            <fieldset key={index} className="border-2 text-black m-2 p-4">
               <p className="text-xl font-bold">{exercise}</p>
               <label htmlFor={`${exercise} weight`} className="text-[0px]">
                 Weight:
               </label>
               <input
-                className="newWorkoutInput p-4"
+                className="bg-primaryHover text-black mr-2 p-4"
                 type="number"
                 name={`${exercise} weight`}
                 placeholder="Weight"
@@ -83,7 +100,7 @@ const NewWorkout = ({ user, routine, exercises }) => {
                 Reps:
               </label>
               <input
-                className="newWorkoutInput p-4 ml-2 my-2"
+                className="bg-primaryHover teact-black p-4 my-2"
                 type="number"
                 name={`${exercise} reps`}
                 placeholder="Total reps"
@@ -94,8 +111,9 @@ const NewWorkout = ({ user, routine, exercises }) => {
             </fieldset>
           ))}
         </div>
+        <hr className="my-4"></hr>
         <button
-          className="bg-secondary font-bold text-white p-4 my-4 w-[280px]"
+          className="bg-primary hover:bg-primaryHover text-xl border-2 font-bold text-black p-4 w-[280px]"
           type="submit"
         >
           Save Workout

@@ -151,18 +151,23 @@
     }
 
     & button {
-        height: 50px;
+        min-height: 50px;
         width: 90%;
         max-width: 450px;
         margin: .25rem auto .5rem;
         cursor: pointer;
         font-weight: bold;
         color: white;
-        font-size: 1.25rem;
+        
     }
 
     & .sign-log-btn {
-        background-color: #E46B1B;
+        background-color: #e8772e;
+        font-size: 1.25rem;
+        color: black;
+        &:hover {
+            background-color: #f4bb97;
+        }
     }
 
     & p {
@@ -181,7 +186,7 @@
 
 
     & .label-radio {
-        background-color: gray;
+        background-color: #001f3f;
         color: white;
         width: 100px;
         height: 50px;
@@ -196,7 +201,8 @@
     }
 
     & input[id^="tab"]:checked+label {
-        background-color: #e8772e;
+        background-color: white;
+        color: #001f3f;
     }
 
     & .modal-content {
@@ -218,7 +224,6 @@
         background-color: white;
         color: #001f3f;
         margin: 1rem auto 0;
-        width: 200px;
         text-decoration: underline;
         cursor: pointer;
     }
@@ -277,14 +282,4 @@
 #pw-reset:checked~.modal-pw-reset {
     display: flex;
     align-items: center;
-}
-
-/**
- * ----------------------------------------
- * custom styles for table
- * ----------------------------------------
- */
-
-.input-red {
-    background-color: red;
 }
