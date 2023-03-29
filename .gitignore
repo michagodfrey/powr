@@ -7,7 +7,6 @@
 
 # testing
 /coverage
-firebase-config.js
 
 # production
 /build

@@ -162,7 +162,7 @@ const Routine = ({routine, exercises, user}) => {
               <button onClick={handleToggleEditing}>
                 <img
                   className="h-[25px] lg:h-[35px] transition-opacity hover:opacity-50"
-                  src={"images/settings-gear-part-2-svgrepo-com.svg"}
+                  src={"images/edit-2-svgrepo-com.svg"}
                   alt="gear icon"
                 />
               </button>

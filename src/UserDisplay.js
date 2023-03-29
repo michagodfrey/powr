@@ -37,9 +37,11 @@ const WorkoutRoutines = ({ user }) => {
             return (
               <li
                 key={routine.toString()}
-                className={`p-4 cursor-pointer font-bold text-lg border-x bg-secondary text-white ${
-                  tab === index && "bg-white text-[#191970]"
-                }`}
+                className={
+                  tab === index
+                    ? "bg-white text-secondary p-4 cursor-pointer font-bold text-lg border-x"
+                    : "bg-secondary text-white p-4 cursor-pointer font-bold text-lg border-x"
+                }
                 onClick={() => updateTab(index)}
               >
                 {routine}
