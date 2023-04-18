@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "./firebase-config";
+import { db } from "../firebase-config";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 
 const CreateRoutineUser = ({ user, allRoutines }) => {

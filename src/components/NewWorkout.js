@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { setDoc, doc, Timestamp } from "firebase/firestore";
-import { db } from "./firebase-config";
+import { db } from "../firebase-config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -20,7 +20,7 @@ const NewWorkout = ({ user, routine, exercises }) => {
     event.preventDefault();
 
     const id = showDate ? date.getTime() : Timestamp.now().toDate().getTime();
-    
+
     await setDoc(doc(db, "users", user.uid, routine, id.toString()), {
       exerciseData,
     });

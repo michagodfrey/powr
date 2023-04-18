@@ -1,11 +1,17 @@
-import React, {useState} from "react";
-import {db} from "./firebase-config";
-import {doc, updateDoc, deleteField, arrayRemove, arrayUnion} from "firebase/firestore";
+import React, { useState } from "react";
+import { db } from "../firebase-config";
+import {
+  doc,
+  updateDoc,
+  deleteField,
+  arrayRemove,
+  arrayUnion,
+} from "firebase/firestore";
 import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
 import NewWorkout from "./NewWorkout";
 import RoutineRecords from "./RoutineRecords";
 
-const Routine = ({routine, exercises, user}) => {
+const Routine = ({ routine, exercises, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newExercise, setNewExercise] = useState("");
   const [showNewWorkoutForm, setShowNewWorkoutForm] = useState(false);
@@ -48,10 +54,9 @@ const Routine = ({routine, exercises, user}) => {
     } else {
       return;
     }
-  }
+  };
 
   const addExercise = async (newExercise) => {
-
     if (newExercise === "") {
       alert("New exercise needs a name!");
       return;
@@ -61,20 +66,20 @@ const Routine = ({routine, exercises, user}) => {
     try {
       await updateDoc(ref, {
         [`routines.${routine}`]: arrayUnion(newExercise),
-      })
+      });
     } catch (error) {
       console.log(error.message);
     }
     window.location.reload();
-  }
+  };
 
   const handleToggleNewWorkoutForm = () => {
     setShowNewWorkoutForm((prevState) => !prevState);
   };
 
   const handleToggleEditing = () => {
-    setIsEditing((prevState) => !prevState)
-  }
+    setIsEditing((prevState) => !prevState);
+  };
 
   return (
     <div className="p-4 border-t">
@@ -95,8 +100,7 @@ const Routine = ({routine, exercises, user}) => {
               </button>
             </div>
             <div className="mb-8 text-xl pt-4 pb-2">
-              Add new exercise:{" "}
-              <div></div>
+              Add new exercise: <div></div>
               <input
                 className="p-2 mr-2 mb-2 max-w-full bg-primaryHover text-black border"
                 type="text"
@@ -204,6 +208,6 @@ const Routine = ({routine, exercises, user}) => {
       )}
     </div>
   );
-}
+};
 
-export default Routine
+export default Routine;
