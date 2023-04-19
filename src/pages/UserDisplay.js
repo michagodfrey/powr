@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import Routine from "../components/Routine";
 import CreatRoutine from "../components/CreateRoutine";
 import { FaPlusSquare } from "react-icons/fa";
@@ -34,7 +32,6 @@ const WorkoutRoutines = ({ user }) => {
 
     return (
       <>
-        <Header />
         <main className="items-center flex flex-col grow min-h-[calc(100vh-192px)] bg-white dark:bg-black transition-colors">
           <ul className="flex flex-wrap">
             {Object.entries(allRoutines).map(([routine], index) => {
@@ -85,7 +82,6 @@ const WorkoutRoutines = ({ user }) => {
             </li>
           </ul>
         </main>
-        <Footer />
       </>
     );
 }

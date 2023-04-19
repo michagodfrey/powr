@@ -1,12 +1,9 @@
 import React from 'react';
 import { Accordion } from "flowbite-react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const Faq = () => {
   return (
     <>
-      <Header />
       <main className="items-center flex flex-col min-h-[calc(100vh-192px)] bg-white dark:bg-black transition-colors">
         <h1 className="text-3xl my-6 text-center">Frequently Asked Questions</h1>
         <Accordion alwaysOpen={true} className="w-11/12 max-w-3xl">
@@ -40,7 +37,6 @@ const Faq = () => {
           </Accordion.Panel>
         </Accordion>
       </main>
-      <Footer />
     </>
   );
 }

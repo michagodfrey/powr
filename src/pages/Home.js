@@ -1,11 +1,8 @@
 import React from 'react';
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <>
-      <Header />
       <main className="items-center flex flex-col grow min-h-[calc(100vh-192px)] bg-white dark:bg-black transition-colors">
         <h1 className="text-[0px]">Progressive Overload Workout Recorder</h1>
         <div className="text-center w-full">
@@ -46,7 +43,6 @@ const Home = () => {
           </p>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

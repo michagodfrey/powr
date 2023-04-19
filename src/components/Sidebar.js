@@ -1,17 +1,9 @@
 import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
 import { Link } from "react-router-dom";
 import userIcon from "../images/user-svgrepo-com.svg";
 
-const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
-  // temp variable
-  const user = 1;
-
-  const logout = async () => {
-    await signOut(auth);
-  };
-
+const Sidebar = ({ sidebarOpen, toggleSidebar, logout, user }) => {
+  
   return (
     <aside
       className={`${
@@ -30,7 +22,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         </>
       )}
       <hr></hr>
-      {user === 1 ? (
+      {user ? (
         <button onClick={logout}>Log out</button>
       ) : (
         <Link to="/login">Login/Join</Link>
