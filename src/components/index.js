@@ -7,3 +7,4 @@ export { default as Routine } from "./Routine";
 export { default as RoutineRecords } from "./RoutineRecords";
 export { default as Sidebar } from "./Sidebar";
 export { default as Workout } from "./Workout";
+export { default as Exercises } from "./Exercises";

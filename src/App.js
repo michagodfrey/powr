@@ -39,7 +39,7 @@ function App() {
   // }
 
   return (
-    <div className="box-border text-textColor font-mono">
+    <div className="box-border text-textColor font-sans">
       <BrowserRouter>
         <Header user={user} />
         <Routes>
