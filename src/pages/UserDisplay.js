@@ -3,25 +3,37 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import Routine from "../components/Routine";
 import CreatRoutine from "../components/CreateRoutine";
-import { FaPlusSquare } from "react-icons/fa";
+import { Tab, Tabs, Box, Container } from '@mui/material';
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tabpanel-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
 
 const WorkoutRoutines = ({ user }) => {
     const [allRoutines, setAllRoutines] = useState([]);
-    const [tab, setTab] = useState(0);
+    const [value, setValue] = useState(0);
 
-    const updateTab = (index) => {
-      setTab(index);
-    }
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
 
     useEffect(() => {
         const getRoutines = async () => {
             try {
                 const docRef = doc(db, "users", `${user.uid}`);
-                
                 const docSnap = await getDoc(docRef);
-                // console.log(docSnap.data());
-                if (docSnap.data().routines) {
-                }
                 setAllRoutines(docSnap.data().routines);
             } catch (error) {
                 console.log(error.message);
@@ -31,58 +43,42 @@ const WorkoutRoutines = ({ user }) => {
     }, [user]);
 
     return (
-      <>
-        <main className="items-center flex flex-col grow min-h-[calc(100vh-192px)] bg-white dark:bg-black transition-colors">
-          <ul className="flex flex-wrap">
-            {Object.entries(allRoutines).map(([routine], index) => {
-              return (
-                <li
-                  key={routine.toString()}
-                  className={
-                    tab === index
-                      ? "bg-white text-secondary p-4 cursor-pointer font-bold text-lg border-x"
-                      : "bg-secondary text-white p-4 cursor-pointer font-bold text-lg border-x"
-                  }
-                  onClick={() => updateTab(index)}
-                >
-                  {routine}
-                </li>
-              );
-            })}
-            <li
-              className="w-16 min-h-[60px] text-4xl grid items-center cursor-pointer bg-primary hover:bg-primaryHover transition-colors text-black"
-              onClick={() => updateTab(-1)}
-            >
-              <FaPlusSquare className="m-auto" />
-            </li>
-          </ul>
-          <ul className="flex flex-wrap">
-            {Object.entries(allRoutines).map(([routine, exercises], index) => {
-              return (
-                <li
-                  key={routine.toString()}
-                  className={tab !== index ? "hidden" : "w-full"}
-                >
-                  <Routine
-                    routine={routine}
-                    exercises={exercises}
-                    user={user}
-                  />
-                </li>
-              );
-            })}
-            <li
-              className={
-                tab === -1 || Object.entries(allRoutines).length === 0
-                  ? "w-full"
-                  : "hidden"
+      <div className="min-h-[calc(100vh-192px)]">
+        <Container component="main" maxWidth="xl">
+          <Box sx={{ width: "100%" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="navigation tabs"
+                variant="scrollable"
+                scrollButtons="auto"
+              >
+                {Object.entries(allRoutines).map(([routineName], index) => (
+                  <Tab key={routineName} label={routineName} index={index} />
+                ))}
+                <Tab label="Create New Routine" />
+              </Tabs>
+            </Box>
+            {Object.entries(allRoutines).map(
+              ([routineName, routineExercises], index) => {
+                return (
+                  <TabPanel key={routineName} value={value} index={index}>
+                    <Routine
+                      routine={routineName}
+                      exercises={routineExercises}
+                      user={user}
+                    />
+                  </TabPanel>
+                );
               }
-            >
+            )}
+            <TabPanel value={value} index={Object.entries(allRoutines).length}>
               <CreatRoutine user={user} allRoutines={allRoutines} />
-            </li>
-          </ul>
-        </main>
-      </>
+            </TabPanel>
+          </Box>
+        </Container>
+      </div>
     );
 }
 

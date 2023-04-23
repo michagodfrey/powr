@@ -2,64 +2,38 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { db, auth, googleProvider, facebookProvider } from "../firebase-config";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import { TextField, Button } from "@mui/material"
+import {
+  CssBaseline,
+  Link,
+  Box,
+  Divider,
+  Typography,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
+
+const theme = createTheme();
 
 const Login = () => {
-  const [tab, setTab] = useState("login");
-
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
+  const [resetInput, setResetInput] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
   const navigate = useNavigate();
 
-  // toggle login and register tabs
-  function updateTab(tab) {
-    setTab(tab);
+  function showResetInput() {
+    setResetInput(!resetInput);
   }
-
-  // auth functions
-  const register = async () => {
-    try {
-      if (registerPassword !== confirmPassword) {
-        throw new Error("Passwords do not match");
-      }
-      await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      )
-        .then(async (res) => {
-          const ref = doc(db, "users", registerEmail);
-          await setDoc(ref, {
-            signInMethod: 'Email and password',
-            email: registerEmail,
-            routines: {},
-            exercises: [],
-            workoutsCount: 0,
-            exercisesCount: 0,
-            dateCreated: Timestamp.now().toDate().getTime(),
-          });
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    } catch (error) {
-      console.log(error.message);
-    }
-    navigate("/");
-  };
 
   const login = async () => {
     try {
@@ -67,7 +41,7 @@ const Login = () => {
     } catch (error) {
       console.log(error.message);
     }
-    navigate('/');
+    navigate("/");
   };
 
   const signInWithGoogle = () => {
@@ -79,7 +53,7 @@ const Login = () => {
         const ref = doc(db, "users", res.user.uid);
 
         await setDoc(ref, {
-          signInMethod: 'Google',
+          signInMethod: "Google",
           email: registerEmail,
           name: registerName,
           image: registerImage,
@@ -93,7 +67,7 @@ const Login = () => {
       .catch((error) => {
         console.log(error.message);
       });
-      navigate("/");
+    navigate("/");
   };
 
   const signInWithFacebook = () => {
@@ -117,7 +91,7 @@ const Login = () => {
       .catch((error) => {
         console.log(error.message);
       });
-      navigate("/");
+    navigate("/");
   };
 
   // TODO: add alert
@@ -129,20 +103,30 @@ const Login = () => {
       .catch((error) => {
         console.log(error.message);
       });
-      navigate("/");
+    navigate("/");
   };
 
   return (
-    <>
-      <main className="items-center flex flex-col grow min-h-[calc(100vh-192px)] max-w-4xl mx-auto dark:bg-black transition-colors bg-primaryHover">
-        <h1 className="text-3xl mt-6 mb-10 text-center">Login and Join</h1>
-        <div className="flex flex-col md:flex-row justify-around w-full max-w-sm md:max-w-4xl border">
-          <div className="flex flex-col px-2 md:w-[360px] mb-6 border">
-            <h2 className="text-2xl mb-4">Use external account</h2>
-            <button
+    <div className="min-h-[calc(100vh-192px)]">
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              Log in with exernal account
+            </Typography>
+            <Button
               onClick={signInWithGoogle}
-              type="button"
-              className="w-full text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-lg px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-4"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, bgcolor: "#4285F4" }}
             >
               <svg
                 className="w-4 h-4 mr-2 -ml-1"
@@ -160,14 +144,15 @@ const Login = () => {
                 ></path>
               </svg>
               Continue with Google
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={signInWithFacebook}
-              type="button"
-              class="w-full text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-lg px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2"
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2, bgcolor: "#3b5998" }}
             >
               <svg
-                class="w-4 h-4 mr-2 -ml-1"
+                className="w-4 h-4 mr-2 -ml-1"
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
@@ -181,101 +166,105 @@ const Login = () => {
                   d="M279.1 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.4 0 225.4 0c-73.22 0-121.1 44.38-121.1 124.7v70.62H22.89V288h81.39v224h100.2V288z"
                 ></path>
               </svg>
-              Continue with Facebook
-            </button>
-          </div>
-
-          <div className="text-2xl text-center mb-6">Or</div>
-
-          <div className="md:w-[360px]">
-            <h2 className="text-2xl mb-4">Login in with email</h2>
-            <div className="flex border">
-              <div onClick={() => updateTab("login")} className="mx-4 border">
-                Login
-              </div>
-              <div onClick={() => updateTab("join")} className="mx-4 border">
-                Join
-              </div>
-            </div>
-            {tab === "login" ? (
-              <div className="border flex flex-col text-2xl">
-                <TextField
-                  onChange={(event) => {
-                    setLoginEmail(event.target.value);
-                  }}
-                  id="loginEmail"
-                  label="Email"
-                  variant="outlined"
-                />
-                <TextField
-                  onChange={(event) => {
-                    setLoginPassword(event.target.value);
-                  }}
-                  id="loginPassword"
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                  autoComplete="current-password"
-                />
-                <Button onClick={login} variant="contained">
-                  Login
-                </Button>
-                <button class="text-white w-full bg-primary hover:bg-primary/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
-                  Dummy Login
-                </button>
-                <TextField
-                  onChange={(event) => {
-                    setResetEmail(event.target.value);
-                  }}
-                  id="resetnEmail"
-                  label="Email"
-                  variant="outlined"
-                />
-                <Button
-                  onClick={() => resetPassword(resetEmail)}
-                  variant="contained"
-                >
-                  Reset Password
-                </Button>
-              </div>
-            ) : (
-              <div className="border flex flex-col text-2xl">
-                <p className="text-center">Sign up with email</p>
-                <TextField
-                  onChange={(event) => {
-                    setRegisterEmail(event.target.value);
-                  }}
-                  id="registerEmail"
-                  label="Email"
-                  variant="outlined"
-                />
-                <TextField
-                  onChange={(event) => {
-                    setRegisterPassword(event.target.value);
-                  }}
-                  id="registerPassword"
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                />
-                <TextField
-                  onChange={(event) => {
-                    setConfirmPassword(event.target.value);
-                  }}
-                  id="repeatPassword"
-                  label="Repeat password"
-                  variant="outlined"
-                  type="password"
-                />
-                <Button onClick={register} variant="contained">
-                  Join
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-    </>
+              Continue Continue with Facebook
+            </Button>
+          </Box>
+          <Divider sx={{ my: 3 }}>
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              OR
+            </Typography>
+          </Divider>
+          <Box
+            sx={{
+              marginTop: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h2" variant="h5">
+              Use email
+            </Typography>
+            <Box component="form" onSubmit={login} noValidate sx={{ mt: 1 }}>
+              <TextField
+                onChange={(event) => {
+                  setLoginEmail(event.target.value);
+                }}
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                onChange={(event) => {
+                  setLoginPassword(event.target.value);
+                }}
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link onClick={showResetInput} href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              {resetInput && (
+                <>
+                  <TextField
+                    onChange={(event) => {
+                      setResetEmail(event.target.value);
+                    }}
+                    margin="normal"
+                    fullWidth
+                    id="emailReset"
+                    label="Account Email"
+                    name="email reset"
+                    autoComplete="email"
+                    autoFocus
+                  ></TextField>
+                  <Button onClick={() => resetPassword(resetEmail)} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    Send Reset Email
+                  </Button>
+                </>
+              )}
+            </Box>
+          </Box>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="left"
+            sx={{ mt: 8, mb: 4 }}
+          >
+            Privacy Policy: We will never share your data or spam you. Your data
+            is only stored for authentication.
+          </Typography>
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 };
 
