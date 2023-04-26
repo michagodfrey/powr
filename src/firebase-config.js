@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import { getFirestore } from "@firebase/firestore";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+} from "@firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJIfkdM5ifRQClz51ZQB_Vq_FZUc4J0PI",
@@ -12,12 +17,43 @@ const firebaseConfig = {
   measurementId: "G-VJKNRBGBCK",
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth()
+export const auth = getAuth(app)
 
 export const db = getFirestore();
 
-export const googleProvider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-export const facebookProvider = new FacebookAuthProvider();
+export const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(async (res) => {
+        const registerName = res.user.displayName;
+        const registerEmail = res.user.email;
+        const registerImage = res.user.photoURL;
+
+        localStorage.setItem("name", registerName);
+        localStorage.setItem("email", registerEmail);
+        localStorage.setItem("image", registerImage);
+
+        const docRef = doc(db, "users", res.user.uid);
+        const docSnap = await getDoc(docRef)
+
+        if (!docSnap.exists()) {
+          await setDoc(docRef, {
+            email: registerEmail,
+            name: registerName,
+            image: registerImage,
+            routines: {},
+            exercises: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+};
+
+export const logout = async () => {
+  await signOut(auth);
+};

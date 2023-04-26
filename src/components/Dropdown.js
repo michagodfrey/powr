@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { signInWithGoogle, logout } from '../firebase-config';
 import { Button, Menu, MenuItem, Divider, Avatar } from "@mui/material";
+import GoogleButton from 'react-google-button';
 
-const Dropdown = ({ logout, user }) => {
+const Dropdown = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -22,7 +24,7 @@ const Dropdown = ({ logout, user }) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Avatar sx={{ bgcolor: "#e8772e" }} />
+        {user ? (<img src={localStorage.getItem('image')} alt="user Google" />) : (<Avatar sx={{ bgcolor: "#e8772e" }} />)}     
       </Button>
       {user ? (
         <Menu
@@ -38,7 +40,7 @@ const Dropdown = ({ logout, user }) => {
             <Link to="/">Workouts</Link>
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <Link to="/account">Account</Link>
+            <Link to="/account">{localStorage.getItem('email')}</Link>
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleClose}>
@@ -56,7 +58,7 @@ const Dropdown = ({ logout, user }) => {
           }}
         >
           <MenuItem onClick={handleClose}>
-            <Link to="/login">Login/Join</Link>
+            <GoogleButton onClick={signInWithGoogle}></GoogleButton>
           </MenuItem>
         </Menu>
       )}

@@ -1,19 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Dropdown from "./Dropdown";
 
 const Header = ({ user }) => {
 
-  const navigate = useNavigate();
-
-  const logout = async () => {
-    await signOut(auth);
-    navigate('/')
-  };
-  
   return (
     <header className="bg-secondary text-white p-4 flex items-center justify-between">
       <div className="flex items-center">
@@ -37,12 +28,13 @@ const Header = ({ user }) => {
         </nav>
       </div>
 
-      <div className="hidden md:block">
-        <Dropdown logout={logout} user={user} />
+      <div className="hidden md:flex items-center">
+        {user ? <span className="mr-2">{localStorage.getItem('name')}</span> : null}
+        <Dropdown user={user} />
       </div>
 
       <div className="md:hidden">
-        <Sidebar logout={logout} user={user} />
+        <Sidebar user={user} />
       </div>
     </header>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { signInWithGoogle, logout } from "../firebase-config";
 import { Box, Drawer, Button, List, Divider, ListItem } from '@mui/material';
 import HamburgerIcon from "../images/hamburger-menu-svgrepo-com.svg";
-import userIcon from "../images/user-svgrepo-com.svg";
+import GoogleButton from 'react-google-button';
 
-const Sidebar = ({ logout, user }) => {
+const Sidebar = ({ user }) => {
   const [drawer, setDrawer] = useState(false);
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -38,8 +39,13 @@ const Sidebar = ({ logout, user }) => {
         {user && (
           <>
             <ListItem>
-              <img src={userIcon} alt="user icon" className="border" />
+              <img
+                src={localStorage.getItem("image")}
+                alt="user Google"
+                className="border"
+              />
             </ListItem>
+            <ListItem>{localStorage.getItem("email")}</ListItem>
             <ListItem>
               <Link to="/">Workouts</Link>
             </ListItem>
@@ -53,7 +59,7 @@ const Sidebar = ({ logout, user }) => {
           <ListItem onClick={logout}>Log out</ListItem>
         ) : (
           <ListItem>
-            <Link to="/login">Login/Join</Link>
+            <GoogleButton onClick={signInWithGoogle}></GoogleButton>
           </ListItem>
         )}
       </List>

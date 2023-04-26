@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Header, Footer, Exercises } from "./components";
+import { Contact, Account, Faq, Home, UserDisplay } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
-import { Header, Footer, Exercises } from './components';
-import { Login, Register, Contact, Account, Faq, Home, UserDisplay } from "./pages";
 
 function App() {
   const [user, setUser] = useState({});
@@ -13,6 +13,7 @@ function App() {
       setUser(currentUser);
     });
   }, []);
+
 
   // dark mode - applied to main
   // const [darkMode, setDarkMode] = useState("light");
@@ -49,8 +50,6 @@ function App() {
           />
           <Route path="/faq" element={<Faq />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account user={user} />} />
           <Route path="/test" element={<Exercises user={user} />} />
         </Routes>
